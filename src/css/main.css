@@ -1,0 +1,26 @@
+.MainContainer{
+    display: flex;
+    justify-content: center;
+}
+.mainDiv{
+    width: 80%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.Accounts, .Hospitals{
+    width: 80%;
+    height: 90vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+}
+.add{
+    height: 50px;
+}
+.TableBasic{
+    width: 100%;
+}

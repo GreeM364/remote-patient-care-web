@@ -1,0 +1,38 @@
+.addNewHospitalAdmin, .addNewHospital{
+    width: 70%;
+    height: 55vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-between;
+    padding: 0;
+}
+.AddNew{
+    width: 100%;
+}
+.input{
+    width: 40%;
+}
+.register{
+    width: 60%;
+    height: 50px;
+}
+.dataPicker{
+    display: inline-block;
+    height: 50px;
+}
+.typography{
+    width: 100%;
+    height: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+}
+.field{
+    color: black;
+    width: 40%;
+}
+.addNewHospital{
+    height: 20vh;
+}

@@ -1,0 +1,38 @@
+.LogForm{
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+}
+.aside_login{
+    margin: 0;
+    width: 50%;
+    padding: 0;
+}
+.section_login{
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.login{
+    width: 376px;
+    height: 496px;
+    margin-top: 90px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.form_login{
+    height: 300px;
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    justify-content: center;
+}

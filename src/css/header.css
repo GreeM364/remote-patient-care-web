@@ -1,0 +1,22 @@
+.Header{
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.search{
+    width: 40%;
+    background-color: lightgray;
+    border-radius: 5px;
+}
+.account_header{
+    width: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+p{
+    line-height: 1;
+}
