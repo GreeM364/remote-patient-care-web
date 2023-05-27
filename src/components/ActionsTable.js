@@ -53,6 +53,7 @@ const StyledMenu = styled((props) => (
 export default function ActionsTable(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -68,6 +69,19 @@ export default function ActionsTable(props) {
             props.onHospital(true)
             props.onHId(props.hospitalId)
         }
+        else if(props.page === "accounts" && props.role === "HospitalAdministrator"){
+            props.onAddDoctor(true)
+            props.onDoctor(props.doctorId)
+        }
+        else if(props.page === "caregiverPatients" && props.role === "HospitalAdministrator"){
+            props.onAddCaregiverPatient(true)
+            props.onCaregiverPatient(props.patientId)
+        }
+        else if(props.page === "patients" && props.role === "HospitalAdministrator"){
+
+            props.onAddPatient(true)
+            props.onPatient(props.patientId)
+        }
         handleClose()
     }
     const view = () => {
@@ -77,7 +91,19 @@ export default function ActionsTable(props) {
         }
         else if(props.page === "hospitals" && props.role === "GlobalAdmin"){
             props.onViewHospital(true)
-            props.onHId(props.hospitalId)
+            props.onHId(props.hospitalId )
+        }
+        else if(props.page === "accounts" && props.role === "HospitalAdministrator"){
+            props.onViewDoctor(true)
+            props.onDoctor(props.doctorId)
+        }
+        else if(props.page === "caregiverPatients" && props.role === "HospitalAdministrator"){
+            props.onViewCaregiverPatient(true)
+            props.onCaregiverPatient(props.patientId)
+        }
+        else if(props.page === "patients" && (props.role === "HospitalAdministrator" || (props.role !== "Doctor" || props.role !== "CaregiverPatient"))){
+            props.onViewPatient(true)
+            props.onPatient(props.patientId)
         }
         handleClose()
     }
@@ -113,7 +139,86 @@ export default function ActionsTable(props) {
                 console.error("Error:", error);
             });
     };
+    const deleteDoctor = (e) => {
+        e.preventDefault();
+        fetch(`https://localhost:7070/api/Doctor/${props.doctorId}`, {
+            method: "DELETE",
+            headers: {"accept": "text/plain", "Authorization": "Bearer " + props.current_token},
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                handleClose();
 
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+    const deleteCaregiverPatients = (e) => {
+        e.preventDefault();
+        fetch(`https://localhost:7070/api/CaregiverPatient/${props.patientId}`, {
+            method: "DELETE",
+            headers: {"accept": "text/plain", "Authorization": "Bearer " + props.current_token},
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                handleClose();
+
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+    const deletePatient = (e) => {
+        e.preventDefault();
+        fetch(`https://localhost:7070/api/Patient/${props.patientId}`, {
+            method: "DELETE",
+            headers: {"accept": "text/plain", "Authorization": "Bearer " + props.current_token},
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                handleClose();
+
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+    const deletePatientToDoctor = (e) => {
+        e.preventDefault();
+        fetch(`https://localhost:7070/api/Doctor/${props.patientId}/delete-patient`, {
+            method: "PATCH",
+            headers: {"accept": "text/plain", "Authorization": "Bearer " + props.current_token},
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                handleClose();
+
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+    const deletePatientToCaregiverPatient = (e) => {
+        e.preventDefault();
+        fetch(`https://localhost:7070/api/CaregiverPatient/${props.patientId}/delete-patient`, {
+            method: "PATCH",
+            headers: {"accept": "text/plain", "Authorization": "Bearer " + props.current_token},
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                handleClose();
+
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
     return (
         <div>
             <Button
@@ -135,10 +240,10 @@ export default function ActionsTable(props) {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={edit} disableRipple>
+                {(props.role !== "Doctor" && props.role !== "CaregiverPatient") && <MenuItem onClick={edit} disableRipple>
                     <EditIcon />
                     Change info
-                </MenuItem>
+                </MenuItem>}
                 <MenuItem onClick={view} disableRipple>
                     <VisibilityIcon />
                     View info
@@ -153,6 +258,36 @@ export default function ActionsTable(props) {
                     <MenuItem onClick={deleteHospital} disableRipple>
                         <DeleteForeverIcon />
                         Delete
+                    </MenuItem>
+                }
+                {props.page === "accounts" && props.role === "HospitalAdministrator" &&
+                    <MenuItem onClick={deleteDoctor} disableRipple>
+                        <DeleteForeverIcon />
+                        Delete
+                    </MenuItem>
+                }
+                {props.page === "patients" && props.role === "HospitalAdministrator" &&
+                    <MenuItem onClick={deletePatient} disableRipple>
+                        <DeleteForeverIcon />
+                        Delete
+                    </MenuItem>
+                }
+                {props.page === "caregiverPatients" && props.role === "HospitalAdministrator" &&
+                    <MenuItem onClick={deleteCaregiverPatients} disableRipple>
+                        <DeleteForeverIcon />
+                        Delete
+                    </MenuItem>
+                }
+                {props.page === "patients" && props.role === "Doctor" &&
+                    <MenuItem onClick={deletePatientToDoctor} disableRipple>
+                        <DeleteForeverIcon />
+                        Delete from me
+                    </MenuItem>
+                }
+                {props.page === "patients" && props.role === "CaregiverPatient" &&
+                    <MenuItem onClick={deletePatientToCaregiverPatient} disableRipple>
+                    <DeleteForeverIcon />
+                    Delete from me
                     </MenuItem>
                 }
             </StyledMenu>

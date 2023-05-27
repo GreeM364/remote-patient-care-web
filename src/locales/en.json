@@ -1,0 +1,20 @@
+{
+    "accounts": "Accounts",
+    "caregiverPatients": "CaregiverPatients",
+    "payments": "Payments",
+    "hospitals": "Hospitals",
+    "patients": "Patients",
+    "addPatients": "Add Patients",
+    "doctor": "Doctor",
+    "caregiver": "Caregiver",
+    "other": "Other",
+    "logout": "Logout",
+    "addNewAdmin": "Add New Admin",
+    "addNewDoctor": "Add New Doctor",
+    "createHospitalAdmin": "Create Hospital Admin",
+    "fullName": "Full Name",
+    "phone": "Phone",
+    "email": "Email",
+    "hospitalName": "Hospital Name",
+    "workingHours": "Working Hours"
+}

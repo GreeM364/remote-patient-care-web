@@ -22,7 +22,7 @@ function Header(props) {
                     <SearchIcon />
                 </IconButton>
             </div>}
-            {props.choose === "accounts" && props.roleUser === "HospitalAdmin" &&
+            {props.choose === "accounts" && props.roleUser === "HospitalAdministrator" &&
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
@@ -44,8 +44,19 @@ function Header(props) {
                     <SearchIcon />
                 </IconButton>
             </div>}
+            {props.choose === "patients" && (props.roleUser === "HospitalAdministrator" || props.roleUser === "Doctor" || props.roleUser === "CaregiverPatient") &&
+            <div class="search">
+                <InputBase
+                    sx={{ ml: 1, flex: 1, width: "88%" }}
+                    placeholder="Find Patient"
+                    inputProps={{ 'aria-label': 'find doctor' }}
+                />
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                </IconButton>
+            </div>}
 
-            <div class="account_header">
+            <div class="account_header" onClick={() => props.onView(true)}>
                 <div class="name_of_account">
                     <h4 style={{margin: 1}}>{props.nameUser}</h4>
                     <p style={{margin:0, color: "grey"}}>{props.roleUser}</p>

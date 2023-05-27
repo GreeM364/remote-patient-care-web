@@ -9,24 +9,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function AddNew(props) {
-    const getHospitals =(e) =>{
-        fetch(`https://localhost:7070/api/Hospital`, {
-            method: "GET",
-            headers: {"Authorization": "Bearer " + props.current_token},
-        })
-            .then(res => res.json())
-            .then((res) => {
-                    setHospitals(res.result);
-                    setHospitalId(res.result[0].id)
-                }
-            )
-    }
-    useEffect(() => {
-        getHospitals();
-    }, []);
     const getHospitalAdmin =(e) =>{
         if(props.hospitalAdmin !== "") {
-            fetch(`https://localhost:7070/api/HospitalAdministrator/${props.hospitalAdmin}`, {
+            fetch(`https://localhost:7070/api/CaregiverPatient/${props.caregiverPatient}`, {
                 method: "GET",
                 headers: {"Authorization": "Bearer " + props.current_token},
             })
@@ -39,8 +24,6 @@ function AddNew(props) {
                         setEmail(admin.email)
                         setPhone(admin.phone)
                         setBirthDateFull(admin.birthDate)
-                        setHospitalId(admin.hospitalId)
-                        getHospital(admin.hospitalId);
                     }
                 )
         }
@@ -48,33 +31,12 @@ function AddNew(props) {
     useEffect(() => {
         getHospitalAdmin();
     }, []);
-    const getHospital =(e) =>{
-        fetch(`https://localhost:7070/api/Hospital/${e}`, {
-            method: "GET",
-            headers: {"Authorization": "Bearer " + props.current_token},
-        })
-            .then(res => res.json())
-            .then((res) => {
-                const hospital = res.result
-                console.log(e)
-                if(e !== "") {
-                    setHospitalName(hospital.name)
-                }
-                else
-                    setHospitalName(hospital.name)
-
-            }
-        )
-
-
-    }
-    const [hospitals, setHospitals] = useState([])
     const AddHostipalAdmin = (e) => {
         e.preventDefault();
         if (firstName !== "" && lastName !== "" && patronymic !== "") {
             const user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
-                phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId};
-            fetch("https://localhost:7070/api/HospitalAdministrator", {
+                phone: phone, email: email, password: password, birthDate: birthDateFull};
+            fetch("https://localhost:7070/api/CaregiverPatient", {
                 method: "POST",
                 headers: { "Content-Type": "application/json",
                     "Authorization": "Bearer " + props.current_token},
@@ -88,15 +50,15 @@ function AddNew(props) {
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-            props.onAddAdmin(false)
+            props.onAddCaregiverPatient(false)
         }
     };
     const EditHostipalAdmin = (e) => {
         e.preventDefault();
         if (firstName !== "" && lastName !== "" && patronymic !== "") {
             const user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
-                phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId};
-            fetch(`https://localhost:7070/api/HospitalAdministrator/${props.hospitalAdmin}`, {
+                phone: phone, email: email, password: password, birthDate: birthDateFull};
+            fetch(`https://localhost:7070/api/CaregiverPatient/${props.caregiverPatient}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json",
                     "Authorization": "Bearer " + props.current_token},
@@ -111,9 +73,9 @@ function AddNew(props) {
                     console.error("Error:", error);
                 });
             if(props.account){
-                props.onViewAdmin(true)
+                props.onViewCaregiverPatient(true)
             }
-            props.onAddAdmin(false)
+            props.onAddCaregiverPatient(false)
         }
     };
     const [firstName, setFirstName] = useState("")
@@ -124,8 +86,6 @@ function AddNew(props) {
     const [birthDate, setBirthDate] = useState("")
     const [birthDateFull, setBirthDateFull] = useState("")
     const [password, setPassword] = useState("")
-    const [hospitalId, setHospitalId] = useState("")
-    const [hospitalName, setHospitalName] = useState("")
     const handleDateChange = (date) => {
         console.log(date)
         const month = "" + date.$M;
@@ -163,22 +123,9 @@ function AddNew(props) {
                     <DatePicker value={birthDate}
                                 onChange={handleDateChange} />
                 </LocalizationProvider>
-                {props.hospitalAdmin === "" && <TextField className="input" id="outlined-basic" label="password" variant="outlined"
-                           value={password} onChange={(e)=> setPassword(e.target.value)}/>}
-                <TextField  className="input"
-                    id="outlined-select-currency"
-                    select
-                    label={hospitalName}
-                    helperText="Please select your currency"
-                             defaultChecked={hospitalId}
-                >
-                    {hospitals.map((option) => (
-                        <MenuItem key={option.id} onClick={()=> setHospitalId(option.id)} value={<option value="" className="id"></option>}>
-                            {option.name}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                {props.hospitalAdmin === "" ? <Button className="register" variant="contained" onClick={AddHostipalAdmin}>Register</Button>
+                {props.caregiverPatient === "" && <TextField className="input" id="outlined-basic" label="password" variant="outlined"
+                                                          value={password} onChange={(e)=> setPassword(e.target.value)}/>}
+                {props.caregiverPatient === "" ? <Button className="register" variant="contained" onClick={AddHostipalAdmin}>Register</Button>
                     : <Button className="register" variant="contained" onClick={EditHostipalAdmin}>Change</Button>}
             </form>
 

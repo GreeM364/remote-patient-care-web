@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
-import admin from '../images/admin.png';
+import photo from '../images/hospital.png';
 import TextField from '@mui/material/TextField';
 import "../css/form.css"
 import Box from '@mui/material/Box';
@@ -32,9 +32,15 @@ export default function CardHospital( props) {
     }, []);
     const [hospital, setHospital] = useState([])
     return (
-        <Card sx={{ display: 'flex' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+        <Card sx={{ display: 'flex', width: '100%' }}>
+            <CardMedia
+                component="img"
+                sx={{ width: '20%' }}
+                image={photo}
+                alt="Live from space album cover"
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
+                <CardContent className="card">
                     <TextField className="field"
                         disabled
                         id="outlined-disabled"
@@ -44,19 +50,11 @@ export default function CardHospital( props) {
                                      id="outlined-disabled"
                                      label="Address" value={hospital.address}
                     />
-                </CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-                    <Button size="small" color="primary" onClick={() => props.onViewHospital(false)}>
+                    <Button sx={{width: "60%"}} size="small" color="primary" onClick={() => props.onViewHospital(false)}>
                         Close
                     </Button>
-                </Box>
+                </CardContent>
             </Box>
-            <CardMedia
-                component="img"
-                sx={{ width: 151 }}
-                image={admin}
-                alt="Live from space album cover"
-            />
         </Card>
     );
 }

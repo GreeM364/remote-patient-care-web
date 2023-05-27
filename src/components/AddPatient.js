@@ -17,16 +17,43 @@ function AddNew(props) {
             .then(res => res.json())
             .then((res) => {
                     setHospitals(res.result);
-                    setHospitalId(res.result[0].id)
                 }
             )
     }
     useEffect(() => {
         getHospitals();
     }, []);
-    const getHospitalAdmin =(e) =>{
-        if(props.hospitalAdmin !== "") {
-            fetch(`https://localhost:7070/api/HospitalAdministrator/${props.hospitalAdmin}`, {
+    const getDocotors =(e) =>{
+        fetch(`https://localhost:7070/api/Doctor`, {
+            method: "GET",
+            headers: {"Authorization": "Bearer " + props.current_token},
+        })
+            .then(res => res.json())
+            .then((res) => {
+                    setDoctors(res.result);
+                }
+            )
+    }
+    useEffect(() => {
+        getDocotors();
+    }, []);
+    const getCaregiverPatients =(e) =>{
+        fetch(`https://localhost:7070/api/CaregiverPatient`, {
+            method: "GET",
+            headers: {"Authorization": "Bearer " + props.current_token},
+        })
+            .then(res => res.json())
+            .then((res) => {
+                    setCaregiverPatients(res.result);
+                }
+            )
+    }
+    useEffect(() => {
+        getCaregiverPatients();
+    }, []);
+    const getPatient =(e) =>{
+        if(props.patient !== "") {
+            fetch(`https://localhost:7070/api/Patient/${props.patient}`, {
                 method: "GET",
                 headers: {"Authorization": "Bearer " + props.current_token},
             })
@@ -41,12 +68,15 @@ function AddNew(props) {
                         setBirthDateFull(admin.birthDate)
                         setHospitalId(admin.hospitalId)
                         getHospital(admin.hospitalId);
+                        getDoctor(admin.doctorId);
+                        getCaregiverPatient(admin.caregiverPatientId);
+
                     }
                 )
         }
     }
     useEffect(() => {
-        getHospitalAdmin();
+        getPatient();
     }, []);
     const getHospital =(e) =>{
         fetch(`https://localhost:7070/api/Hospital/${e}`, {
@@ -55,26 +85,60 @@ function AddNew(props) {
         })
             .then(res => res.json())
             .then((res) => {
-                const hospital = res.result
-                console.log(e)
-                if(e !== "") {
-                    setHospitalName(hospital.name)
-                }
-                else
+                    const hospital = res.result
                     setHospitalName(hospital.name)
 
-            }
-        )
+                }
+            )
+
+
+    }
+    const getDoctor =(e) =>{
+
+        fetch(`https://localhost:7070/api/Doctor/${e}`, {
+            method: "GET",
+            headers: {"Authorization": "Bearer " + props.current_token},
+        })
+            .then(res => res.json())
+            .then((res) => {
+                    console.log(res.result)
+                    const hospital = res.result
+                    setDoctorName(hospital.firstName + " " + hospital.lastName)
+
+                }
+            )
+    }
+    const getCaregiverPatient =(e) =>{
+        fetch(`https://localhost:7070/api/CaregiverPatient/${e}`, {
+            method: "GET",
+            headers: {"Authorization": "Bearer " + props.current_token},
+        })
+            .then(res => res.json())
+            .then((res) => {
+                    const hospital = res.result
+                    console.log(e)
+                    setCaregiverPatientName(hospital.firstName + " " + hospital.lastName)
+
+                }
+            )
 
 
     }
     const [hospitals, setHospitals] = useState([])
-    const AddHostipalAdmin = (e) => {
+    const [doctors, setDoctors] = useState([])
+    const [caregiverPatients, setCaregiverPatients] = useState([])
+    const AddPatient = (e) => {
         e.preventDefault();
         if (firstName !== "" && lastName !== "" && patronymic !== "") {
-            const user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
-                phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId};
-            fetch("https://localhost:7070/api/HospitalAdministrator", {
+            let user = {}
+            if(caregiverPatientId === "" || doctorId ==="")
+                user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
+                    phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId};
+            else
+                user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
+                phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId,
+                doctorId: doctorId, caregiverPatientId: caregiverPatientId};
+            fetch("https://localhost:7070/api/Patient", {
                 method: "POST",
                 headers: { "Content-Type": "application/json",
                     "Authorization": "Bearer " + props.current_token},
@@ -88,15 +152,16 @@ function AddNew(props) {
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-            props.onAddAdmin(false)
+            props.onAddPatient(false)
         }
     };
-    const EditHostipalAdmin = (e) => {
+    const EditPatient = (e) => {
         e.preventDefault();
         if (firstName !== "" && lastName !== "" && patronymic !== "") {
             const user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
-                phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId};
-            fetch(`https://localhost:7070/api/HospitalAdministrator/${props.hospitalAdmin}`, {
+                phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId,
+                doctorId: doctorId, caregiverPatientId: caregiverPatientId};
+            fetch(`https://localhost:7070/api/Patient/${props.patient}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json",
                     "Authorization": "Bearer " + props.current_token},
@@ -110,10 +175,7 @@ function AddNew(props) {
                 .catch((error) => {
                     console.error("Error:", error);
                 });
-            if(props.account){
-                props.onViewAdmin(true)
-            }
-            props.onAddAdmin(false)
+            props.onAddPatient(false)
         }
     };
     const [firstName, setFirstName] = useState("")
@@ -126,6 +188,10 @@ function AddNew(props) {
     const [password, setPassword] = useState("")
     const [hospitalId, setHospitalId] = useState("")
     const [hospitalName, setHospitalName] = useState("")
+    const [doctorId, setDoctorId] = useState("")
+    const [doctorName, setDoctorName] = useState("")
+    const [caregiverPatientId, setCaregiverPatientId] = useState("")
+    const [caregiverPatientName, setCaregiverPatientName] = useState("")
     const handleDateChange = (date) => {
         console.log(date)
         const month = "" + date.$M;
@@ -163,14 +229,14 @@ function AddNew(props) {
                     <DatePicker value={birthDate}
                                 onChange={handleDateChange} />
                 </LocalizationProvider>
-                {props.hospitalAdmin === "" && <TextField className="input" id="outlined-basic" label="password" variant="outlined"
-                           value={password} onChange={(e)=> setPassword(e.target.value)}/>}
+                {props.patient === "" && <TextField className="input" id="outlined-basic" label="password" variant="outlined"
+                                                          value={password} onChange={(e)=> setPassword(e.target.value)}/>}
                 <TextField  className="input"
-                    id="outlined-select-currency"
-                    select
-                    label={hospitalName}
-                    helperText="Please select your currency"
-                             defaultChecked={hospitalId}
+                            id="outlined-select-currency"
+                            select
+                            label={hospitalName}
+                            helperText="Please select your currency"
+                            defaultChecked={hospitalId}
                 >
                     {hospitals.map((option) => (
                         <MenuItem key={option.id} onClick={()=> setHospitalId(option.id)} value={<option value="" className="id"></option>}>
@@ -178,8 +244,34 @@ function AddNew(props) {
                         </MenuItem>
                     ))}
                 </TextField>
-                {props.hospitalAdmin === "" ? <Button className="register" variant="contained" onClick={AddHostipalAdmin}>Register</Button>
-                    : <Button className="register" variant="contained" onClick={EditHostipalAdmin}>Change</Button>}
+                <TextField  className="input"
+                            id="outlined-select-currency"
+                            select
+                            label={doctorName}
+                            helperText="Please select your currency"
+                            defaultChecked={doctorId}
+                >
+                    {doctors.map((option) => (
+                        <MenuItem key={option.id} onClick={()=> setDoctorId(option.id)} value={<option value="" className="id"></option>}>
+                            {option.firstName} {option.lastName}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField  className="input"
+                            id="outlined-select-currency"
+                            select
+                            label={caregiverPatientName}
+                            helperText="Please select your currency"
+                            defaultChecked={caregiverPatientId}
+                >
+                    {caregiverPatients.map((option) => (
+                        <MenuItem key={option.id} onClick={()=> setCaregiverPatientId(option.id)} value={<option value="" className="id"></option>}>
+                            {option.firstName} {option.lastName}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                {props.patient === "" ? <Button className="register" variant="contained" onClick={AddPatient}>Register</Button>
+                    : <Button className="register" variant="contained" onClick={EditPatient}>Change</Button>}
             </form>
 
         </div>

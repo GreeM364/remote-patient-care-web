@@ -7,11 +7,7 @@ import React, { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 
 function LogForm(props) {
-    // const Login = () => {
-    //     if(password != "" && email != ""){
-    //         props.onLog(true)
-    //     }
-    // }
+
     const handleLogin = (e) => {
         e.preventDefault();
         if (password !== "" && email !== "") {
@@ -29,13 +25,25 @@ function LogForm(props) {
                     try {
                         const decoded = jwtDecode(res.result.token);
                         props.onName(decoded.unique_name);
-                        props.onId(decoded.nameid);
                         if(decoded.role[0] === "User") {
                             props.onRole(decoded.role[1]);
+                            if (decoded.role[1] === "Doctor")
+                                props.onId(decoded.Doctor)
+                            else if (decoded.role[1] === "CaregiverPatient")
+                                props.onId(decoded.CaregiverPatient)
+                            else if (decoded.role[1] === "Patient")
+                                props.onId(decoded.Patient)
                         }
                         else {
                             props.onRole(decoded.role[0])
+                            if (decoded.role[0] === "Doctor")
+                                props.onId(decoded.Doctor)
+                            else if (decoded.role[0] === "CaregiverPatient")
+                                props.onId(decoded.CaregiverPatient)
+                            else if (decoded.role[0] === "Patient")
+                                props.onId(decoded.Patient)
                         }
+
                     } catch (error) {
                         console.error("Ошибка при расшифровке токена:", error.message);
                     }

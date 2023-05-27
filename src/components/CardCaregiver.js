@@ -12,7 +12,6 @@ import "../css/form.css"
 export default function CardAdmin( props) {
 
     const getHospitalAdmin =(e) =>{
-        console.log(props.current_token)
         if(props.account){
             fetch(`https://localhost:7070/api/User/profile`, {
                 method: "GET",
@@ -20,16 +19,15 @@ export default function CardAdmin( props) {
             })
                 .then(res => res.json())
                 .then((res) => {
-                        console.log(res.result.hospitalAdministrator)
-                        setUser(res.result.hospitalAdministrator)
-                        setBirthDay(res.result.hospitalAdministrator.birthDate.split("T")[0])
-                        getHospital(res.result.hospitalAdministrator.hospitalId)
+                        console.log(res.result.caregiverPatient)
+                        setUser(res.result.caregiverPatient)
+                        setBirthDay(res.result.caregiverPatient.birthDate.split("T")[0])
 
                     }
                 )
         }
         else {
-            fetch(`https://localhost:7070/api/HospitalAdministrator/${props.hospitalAdmin}`, {
+            fetch(`https://localhost:7070/api/CaregiverPatient/${props.caregiverPatient}`, {
                 method: "GET",
                 headers: {"Authorization": "Bearer " + props.current_token},
             })
@@ -38,7 +36,6 @@ export default function CardAdmin( props) {
                         console.log(res.result)
                         setUser(res.result)
                         setBirthDay(res.result.birthDate.split("T")[0])
-                        getHospital(res.result.hospitalId)
 
                     }
                 )
@@ -48,26 +45,14 @@ export default function CardAdmin( props) {
         getHospitalAdmin();
     }, []);
     const Edit = () => {
-        props.onViewAdmin(false)
-        props.onAddAdmin(true)
+        props.onViewCaregiverPatient(false)
+        props.onAddCaregiverPatient(true)
         props.onId(user.id)
-    }
-    const getHospital =(e) =>{
-        fetch(`https://localhost:7070/api/Hospital/${e}`, {
-            method: "GET",
-            headers: {"Authorization": "Bearer " + props.current_token},
-        })
-            .then(res => res.json())
-            .then((res) => {
-                    setHospitlName(res.result.name)
-                }
-            )
     }
     const [user, setUser] = useState([])
     const [birthDay, setBirthDay] = useState("")
-    const [hospitalName, setHospitlName] = useState("")
     return (
-        <Card sx={{ maxWidth: '100%'}} >
+        <Card sx={{ maxWidth: '100%' }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -82,21 +67,17 @@ export default function CardAdmin( props) {
                     </Typography>
                     <Typography className="typography" variant="body2" color="text.secondary">
                         <TextField className="field"
-                            disabled
-                            id="outlined-disabled"
-                            label="Email" value={user.email}
+                                   disabled
+                                   id="outlined-disabled"
+                                   label="Email" value={user.email}
                         /><TextField className="field"
-                        disabled
-                        id="outlined-disabled"
-                        label="Phone" value={user.phone}
+                                     disabled
+                                     id="outlined-disabled"
+                                     label="Phone" value={user.phone}
                     /><TextField className="field"
-                        disabled
-                        id="outlined-disabled"
-                        label="Birth Day" value={birthDay}
-                    /><TextField className="field"
-                        disabled
-                        id="outlined-disabled"
-                        label="Hospital Name" value={hospitalName}
+                                 disabled
+                                 id="outlined-disabled"
+                                 label="Birth Day" value={birthDay}
                     />
                     </Typography>
                 </CardContent>
@@ -105,7 +86,7 @@ export default function CardAdmin( props) {
                 {props.account && <Button size="small" color="primary" onClick={Edit}>
                     Edit
                 </Button>}
-                <Button size="small" color="primary" onClick={() => props.onViewAdmin(false)}>
+                <Button size="small" color="primary" onClick={() => props.onViewCaregiverPatient(false)}>
                     Close
                 </Button>
             </CardActions>

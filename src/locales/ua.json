@@ -1,0 +1,20 @@
+{
+    "accounts": "Облікові записи",
+    "caregiverPatients": "Пацієнти-опікуни",
+    "payments": "Платежі",
+    "hospitals": "Лікарні",
+    "patients": "Пацієнти",
+    "addPatients": "Додати пацієнтів",
+    "doctor": "Лікар",
+    "caregiver": "Опікун",
+    "other": "Інше",
+    "logout": "Вийти",
+    "addNewAdmin": "Додати нового адміністратора",
+    "addNewDoctor": "Додати нового лікаря",
+    "createHospitalAdmin": "Створити адміністратора лікарні",
+    "fullName": "Повне ім'я",
+    "phone": "Телефон",
+    "email": "Електронна пошта",
+    "hospitalName": "Назва лікарні",
+    "workingHours": "Робочі години"
+}
