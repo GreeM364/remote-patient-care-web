@@ -10,8 +10,10 @@ import TextField from '@mui/material/TextField';
 import "../css/form.css"
 import { ListBox } from 'primereact/listbox';
 import Form1 from "./Form1";
+import {useTranslation} from "react-i18next";
 
 export default function CardAdmin(props) {
+    const { t } = useTranslation();
 
     const getPatient = () => {
         fetch(`https://localhost:7070/api/Patient/${props.patient}`, {
@@ -134,23 +136,23 @@ export default function CardAdmin(props) {
                     </Typography>
                     {(criticalСondition.length === 0 || physicalCondition === undefined) && (
                         <Typography className="typography" variant="body2" color="text.secondary" sx={{ width: "100%", height: "30vh", display: "flex", flexWrap: "wrap", justifyContent: "space-around", alignContent: "space-around" }}>
-                            <TextField className="field" disabled id="outlined-disabled" label="Email" value={user.email} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Phone" value={user.phone} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Birth Day" value={birthDay} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Doctor Name" value={hospitalName} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Birth Day" value={doctorName} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Caregiver Patient Name" value={caregiverPatientName} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('email')} value={user.email} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('phone')} value={user.phone} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('birthDay')} value={birthDay} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t("doctorName")} value={hospitalName} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('birthDay')} value={doctorName} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t("caregiverPatientName")} value={caregiverPatientName} />
                         </Typography>
                     )}
 
                     {(criticalСondition.length !== 0 && physicalCondition !== undefined) && (
                         <Typography className="typography" variant="body2" color="text.secondary" sx={{ width: "100%", height: "80vh", display: "flex", flexWrap: "wrap", justifyContent: "space-around", alignContent: "space-around" }}>
-                            <TextField className="field" disabled id="outlined-disabled" label="Email" value={user.email} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Phone" value={user.phone} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Birth Day" value={birthDay} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Hospital Name" value={hospitalName} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Doctor Name" value={doctorName} />
-                            <TextField className="field" disabled id="outlined-disabled" label="Caregiver Patient Name" value={caregiverPatientName} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('email')} value={user.email} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('phone')} value={user.phone} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t('birthDay')} value={birthDay} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t("hospitalName")} value={hospitalName} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t("doctorName")} value={doctorName} />
+                            <TextField className="field" disabled id="outlined-disabled" label={t("caregiverPatientName")} value={caregiverPatientName} />
                             {criticalСondition.length !== 0 && (
                                 <div className="criticalCondition">
                                     {criticalСondition.slice(-2).map((item) => (
@@ -168,12 +170,12 @@ export default function CardAdmin(props) {
 
                             {physicalCondition !== undefined && (
                                 <div className="physicalCondition">
-                                    <TextField className="field" disabled id="outlined-disabled" label="Time" value={physicalCondition.time} />
-                                    <TextField className="field" disabled id="outlined-disabled" label="Pulse" value={physicalCondition.pulse} />
-                                    <TextField className="field" disabled id="outlined-disabled" label="UpperArterialPressure" value={physicalCondition.upperArterialPressure} />
-                                    <TextField className="field" disabled id="outlined-disabled" label="LowerArterialPressure" value={physicalCondition.lowerArterialPressure} />
-                                    <TextField className="field" disabled id="outlined-disabled" label="BodyTemperature" value={physicalCondition.bodyTemperature} />
-                                    <TextField className="field" disabled id="outlined-disabled" label="breathingRate" value={physicalCondition.breathingRate} />
+                                    <TextField className="field" disabled id="outlined-disabled" label={t("time")} value={physicalCondition.time} />
+                                    <TextField className="field" disabled id="outlined-disabled" label={t("pulse")} value={physicalCondition.pulse} />
+                                    <TextField className="field" disabled id="outlined-disabled" label={t("upperArterialPressure")} value={physicalCondition.upperArterialPressure} />
+                                    <TextField className="field" disabled id="outlined-disabled" label={t("lowerArterialPressure")} value={physicalCondition.lowerArterialPressure} />
+                                    <TextField className="field" disabled id="outlined-disabled" label={t("bodyTemperature")} value={physicalCondition.bodyTemperature} />
+                                    <TextField className="field" disabled id="outlined-disabled" label={t("breathingRate")} value={physicalCondition.breathingRate} />
                                 </div>
                             )}
                         </Typography>

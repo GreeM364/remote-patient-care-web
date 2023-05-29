@@ -7,8 +7,10 @@ import "../css/form.css"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {useTranslation} from "react-i18next";
 
 function AddHospital(props) {
+    const { t } = useTranslation();
     const AddHostipal = (e) => {
         e.preventDefault();
         if (name !== "" && address !== "") {
@@ -78,13 +80,13 @@ function AddHospital(props) {
     return (
         <div className="AddNew">
             <form className="addNewHospital">
-                <TextField className="input" id="outlined-basic" label="Name" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("name")} variant="outlined"
                            value={name} onChange={(e)=> setName(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="Address" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("address")} variant="outlined"
                            value={address} onChange={(e)=> setAddress(e.target.value)}/>
 
-                {props.hospitalId === "" ? <Button className="register" variant="contained" onClick={AddHostipal}>Register</Button>
-                    : <Button className="register" variant="contained" onClick={EditHostipal}>Change</Button>}
+                {props.hospitalId === "" ? <Button className="register" variant="contained" onClick={AddHostipal}>{t('register')}</Button>
+                    : <Button className="register" variant="contained" onClick={EditHostipal}>{t('change')}</Button>}
             </form>
 
         </div>

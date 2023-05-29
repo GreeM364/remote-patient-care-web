@@ -5,8 +5,10 @@ import AddPatient from "./AddPatient";
 import TextField from "@mui/material/TextField";
 import "../css/form.css"
 import MenuItem from "@mui/material/MenuItem";
+import {useTranslation} from "react-i18next";
 
 function Patients(props) {
+    const { t } = useTranslation();
     const getPatients =(e) =>{
         if(props.roleUser === "Doctor") {
             fetch(`https://localhost:7070/api/Patient`, {
@@ -83,14 +85,14 @@ function Patients(props) {
 
     return (
         <div className="Accounts">
-            <h1>Patients to me</h1>
+            <h1>{t("patientsToMe")}</h1>
             <form className="addNewPatient">
 
                 <TextField  className="input"
                             id="outlined-select-currency"
                             select
-                            label="Patient"
-                            helperText="Please select your currency"
+                            label={t("patient")}
+                            helperText={t("selectPatient")}
                             defaultChecked={patientId}
                 >
                     {patients.map((option) => (
@@ -99,7 +101,7 @@ function Patients(props) {
                         </MenuItem>
                     ))}
                 </TextField>
-                <Button className="register" variant="contained" onClick={AddPatient}>Register</Button>
+                <Button className="register" variant="contained" onClick={AddPatient}>{t('register')}</Button>
             </form>
 
 

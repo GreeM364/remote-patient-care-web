@@ -7,6 +7,7 @@ import "../css/form.css"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useTranslation } from 'react-i18next';
 
 function AddNew(props) {
     const getHospitals =(e) =>{
@@ -24,6 +25,7 @@ function AddNew(props) {
     useEffect(() => {
         getHospitals();
     }, []);
+    const { t } = useTranslation();
     const getDocotr =(e) =>{
         if(props.doctor !== "") {
             fetch(`https://localhost:7070/api/Doctor/${props.doctor}`, {
@@ -157,31 +159,31 @@ function AddNew(props) {
     return (
         <div className="AddNew">
             <form className="addNewHospitalAdmin">
-                <TextField className="input" id="outlined-basic" label="First Name" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("firstName")} variant="outlined"
                            value={firstName} onChange={(e)=> setFirstName(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="Last Name" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("lastName")} variant="outlined"
                            value={lastName} onChange={(e)=> setLastName(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="Patronymic" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("patronymic")} variant="outlined"
                            value={patronymic} onChange={(e)=> setPatronymic(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="Phone" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("phone")} variant="outlined"
                            value={phone} onChange={(e)=> setPhone(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="Email" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("email")} variant="outlined"
                            value={email} onChange={(e)=> setEmail(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="Beginning Working Day" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("beginningWorkingDay")} variant="outlined"
                            value={begginingDay} onChange={(e)=> setBegginingDay(e.target.value)}/>
-                <TextField className="input" id="outlined-basic" label="End Working Day" variant="outlined"
+                <TextField className="input" id="outlined-basic" label={t("endWorkingDay")} variant="outlined"
                            value={endDay} onChange={(e)=> setEndDay(e.target.value)}/>
                 <LocalizationProvider className="input" dateAdapter={AdapterDayjs}>
                     <DatePicker value={birthDate}
                                 onChange={handleDateChange} />
                 </LocalizationProvider>
-                {props.doctor === "" && <TextField className="input" id="outlined-basic" label="password" variant="outlined"
+                {props.doctor === "" && <TextField className="input" id="outlined-basic" label={t("password")} variant="outlined"
                                                           value={password} onChange={(e)=> setPassword(e.target.value)}/>}
                 <TextField  className="input"
                             id="outlined-select-currency"
                             select
                             label={hospitalName}
-                            helperText="Please select your currency"
+                            helperText={t("selectHospital")}
                             defaultChecked={hospitalId}
                 >
                     {hospitals.map((option) => (
@@ -190,8 +192,8 @@ function AddNew(props) {
                         </MenuItem>
                     ))}
                 </TextField>
-                {props.doctor === "" ? <Button className="register" variant="contained" onClick={AddDoctor}>Register</Button>
-                    : <Button className="register" variant="contained" onClick={EditDoctor}>Change</Button>}
+                {props.doctor === "" ? <Button className="register" variant="contained" onClick={AddDoctor}>{t("register")}</Button>
+                    : <Button className="register" variant="contained" onClick={EditDoctor}>{t("change")}</Button>}
             </form>
 
         </div>

@@ -9,9 +9,10 @@ import photo from '../images/hospital.png';
 import TextField from '@mui/material/TextField';
 import "../css/form.css"
 import Box from '@mui/material/Box';
+import {useTranslation} from "react-i18next";
 
 export default function CardHospital( props) {
-
+    const { t } = useTranslation();
     const getHospital =(e) =>{
         fetch(`https://localhost:7070/api/Hospital/${props.hospital}`, {
             method: "GET",
@@ -44,14 +45,14 @@ export default function CardHospital( props) {
                     <TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label="Name" value={hospital.name}
+                        label={t("name")} value={hospital.name}
                         /><TextField className="field"
                                      disabled
                                      id="outlined-disabled"
-                                     label="Address" value={hospital.address}
+                                     label={t("address")} value={hospital.address}
                     />
                     <Button sx={{width: "60%"}} size="small" color="primary" onClick={() => props.onViewHospital(false)}>
-                        Close
+                        {t("close")}
                     </Button>
                 </CardContent>
             </Box>

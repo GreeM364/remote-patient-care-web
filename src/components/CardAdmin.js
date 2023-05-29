@@ -8,9 +8,10 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import admin from '../images/admin.png';
 import TextField from '@mui/material/TextField';
 import "../css/form.css"
+import {useTranslation} from "react-i18next";
 
 export default function CardAdmin( props) {
-
+    const { t } = useTranslation();
     const getHospitalAdmin =(e) =>{
         console.log(props.current_token)
         if(props.account){
@@ -84,29 +85,29 @@ export default function CardAdmin( props) {
                         <TextField className="field"
                             disabled
                             id="outlined-disabled"
-                            label="Email" value={user.email}
+                            label={t("email")} value={user.email}
                         /><TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label="Phone" value={user.phone}
+                        label={t("phone")} value={user.phone}
                     /><TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label="Birth Day" value={birthDay}
+                        label={t("birthDay")} value={birthDay}
                     /><TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label="Hospital Name" value={hospitalName}
+                        label={t("hospitalName")} value={hospitalName}
                     />
                     </Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>
                 {props.account && <Button size="small" color="primary" onClick={Edit}>
-                    Edit
+                    {t("edit")}
                 </Button>}
                 <Button size="small" color="primary" onClick={() => props.onViewAdmin(false)}>
-                    Close
+                    {t("close")}
                 </Button>
             </CardActions>
         </Card>

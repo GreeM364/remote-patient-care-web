@@ -101,8 +101,12 @@ function Menu(props) {
             </div>
 
             <div className="list">
-                <button onClick={() => changeLanguage('en')}>{t('english')}</button>
                 <button onClick={() => changeLanguage('ua')}>{t('ukrainian')}</button>
+                <button onClick={() => changeLanguage('en')}>{t('english')}</button>
+                <button onClick={() => changeLanguage('fr')}>{t('french')}</button>
+                <button onClick={() => changeLanguage('es')}>{t('spanish')}</button>
+                <button onClick={() => changeLanguage('ar')}>{t('arabic')}</button>
+                <button onClick={() => changeLanguage('zh')}>{t('сhinese')}</button>
                 <p onClick={() => props.onLog(false)}>
                     <LogoutIcon/>
                     <span>{t('logout')}</span>

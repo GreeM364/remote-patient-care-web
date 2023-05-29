@@ -4,9 +4,11 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import photo2 from "../images/image2.png";
 import "../css/header.css"
+import {useTranslation} from "react-i18next";
 
 
 function Header(props) {
+    const { t } = useTranslation();
 
 
     return (
@@ -15,7 +17,7 @@ function Header(props) {
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
-                    placeholder="Find Admin"
+                    placeholder={t("findAdmin")}
                     inputProps={{ 'aria-label': 'find doctor' }}
                 />
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
@@ -26,7 +28,7 @@ function Header(props) {
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
-                    placeholder="Find Doctor"
+                    placeholder={t("findDoctor")}
                     inputProps={{ 'aria-label': 'find doctor' }}
                 />
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
@@ -37,7 +39,7 @@ function Header(props) {
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
-                    placeholder="Find Hospital"
+                    placeholder={t("findHospital")}
                     inputProps={{ 'aria-label': 'find doctor' }}
                 />
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
@@ -48,7 +50,7 @@ function Header(props) {
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
-                    placeholder="Find Patient"
+                    placeholder={t("findPatient")}
                     inputProps={{ 'aria-label': 'find doctor' }}
                 />
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">

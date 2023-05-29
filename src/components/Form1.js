@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import moment from 'moment';
+import {useTranslation} from "react-i18next";
+
 
 const Form1 = ({ patientId }) => {
     const [connection, setConnection] = useState(null);
@@ -39,7 +41,7 @@ const Form1 = ({ patientId }) => {
             }
         };
     }, [connection]);
-
+    const { t } = useTranslation();
     const renderPhysicalMessages = () => {
         return (
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
@@ -50,7 +52,7 @@ const Form1 = ({ patientId }) => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="pulse" stroke="#8884d8" name="Pulse" />
+                        <Line type="monotone" dataKey="pulse" stroke="#8884d8" name={t("pulse")} />
                     </LineChart>
 
                     <LineChart width={400} height={300} data={physicalMessages}>
@@ -63,13 +65,13 @@ const Form1 = ({ patientId }) => {
                             type="monotone"
                             dataKey="upperArterialPressure"
                             stroke="#82ca9d"
-                            name="Upper Arterial Pressure"
+                            name={t("upperArterialPressure")}
                         />
                         <Line
                             type="monotone"
                             dataKey="lowerArterialPressure"
                             stroke="#ffc658"
-                            name="Lower Arterial Pressure"
+                            name={t("lowerArterialPressure")}
                         />
                     </LineChart>
                 </div>
@@ -81,7 +83,7 @@ const Form1 = ({ patientId }) => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="bodyTemperature" stroke="#ff7300" name="Body Temperature" />
+                        <Line type="monotone" dataKey="bodyTemperature" stroke="#ff7300" name={t("bodyTemperature")} />
                     </LineChart>
 
                     <LineChart width={400} height={300} data={physicalMessages}>
@@ -90,7 +92,7 @@ const Form1 = ({ patientId }) => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line type="monotone" dataKey="breathingRate" stroke="#0088aa" name="Breathing Rate" />
+                        <Line type="monotone" dataKey="breathingRate" stroke="#0088aa" name={t("breathingRate")} />
                     </LineChart>
                 </div>
             </div>
@@ -99,7 +101,7 @@ const Form1 = ({ patientId }) => {
 
     return (
         <div>
-            <button onClick={startConnection}>View condition in real time</button>
+            <button onClick={startConnection}>{t("viewConditionInRealTime")}</button>
             <div style={{ width: '100%' }}>{renderPhysicalMessages()}</div>
         </div>
     );

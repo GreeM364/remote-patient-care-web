@@ -13,6 +13,7 @@ import "../css/main.css"
 import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import ActionsTable from "./ActionsTable";
+import {useTranslation} from "react-i18next";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -34,6 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 export default function BasicTable(props) {
+    const { t } = useTranslation();
     const getData =(e) =>{
         if (props.page === "accounts" && props.roleUser === "GlobalAdmin") {
             fetch(`https://localhost:7070/api/HospitalAdministrator`, {

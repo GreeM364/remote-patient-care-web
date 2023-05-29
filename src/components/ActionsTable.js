@@ -8,8 +8,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { useTranslation } from 'react-i18next';
 
 const StyledMenu = styled((props) => (
+
     <Menu
         elevation={0}
         anchorOrigin={{
@@ -51,6 +53,7 @@ const StyledMenu = styled((props) => (
 }));
 
 export default function ActionsTable(props) {
+    const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -242,52 +245,52 @@ export default function ActionsTable(props) {
             >
                 {(props.role !== "Doctor" && props.role !== "CaregiverPatient") && <MenuItem onClick={edit} disableRipple>
                     <EditIcon />
-                    Change info
+                    {t('changeInfo')}
                 </MenuItem>}
                 <MenuItem onClick={view} disableRipple>
                     <VisibilityIcon />
-                    View info
+                    {t('viewInfo')}
                 </MenuItem>
                 {props.page === "accounts" && props.role === "GlobalAdmin" &&
                     <MenuItem onClick={deleteHospitalAdmin} disableRipple>
                         <DeleteForeverIcon />
-                        Delete
+                        {t('delete')}
                     </MenuItem>
                 }
                 {props.page === "hospitals" && props.role === "GlobalAdmin" &&
                     <MenuItem onClick={deleteHospital} disableRipple>
                         <DeleteForeverIcon />
-                        Delete
+                        {t('delete')}
                     </MenuItem>
                 }
                 {props.page === "accounts" && props.role === "HospitalAdministrator" &&
                     <MenuItem onClick={deleteDoctor} disableRipple>
                         <DeleteForeverIcon />
-                        Delete
+                        {t('delete')}
                     </MenuItem>
                 }
                 {props.page === "patients" && props.role === "HospitalAdministrator" &&
                     <MenuItem onClick={deletePatient} disableRipple>
                         <DeleteForeverIcon />
-                        Delete
+                        {t('delete')}
                     </MenuItem>
                 }
                 {props.page === "caregiverPatients" && props.role === "HospitalAdministrator" &&
                     <MenuItem onClick={deleteCaregiverPatients} disableRipple>
                         <DeleteForeverIcon />
-                        Delete
+                        {t('delete')}
                     </MenuItem>
                 }
                 {props.page === "patients" && props.role === "Doctor" &&
                     <MenuItem onClick={deletePatientToDoctor} disableRipple>
                         <DeleteForeverIcon />
-                        Delete from me
+                        {t('deleteFromMe')}
                     </MenuItem>
                 }
                 {props.page === "patients" && props.role === "CaregiverPatient" &&
                     <MenuItem onClick={deletePatientToCaregiverPatient} disableRipple>
                     <DeleteForeverIcon />
-                    Delete from me
+                        {t('deleteFromMe')}
                     </MenuItem>
                 }
             </StyledMenu>

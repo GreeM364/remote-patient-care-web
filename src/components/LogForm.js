@@ -5,9 +5,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import React, { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
+import {useTranslation} from "react-i18next";
 
 function LogForm(props) {
-
+    const { t } = useTranslation();
     const handleLogin = (e) => {
         e.preventDefault();
         if (password !== "" && email !== "") {
@@ -67,22 +68,22 @@ function LogForm(props) {
                 <div class="login">
                     <img style={{height: "80px", width: "80px", margin: 0, display: "block"}} src={photo2}/>
 
-                    <h1 style={{fontSize: 48, display: "block"}}>Log In</h1>
+                    <h1 style={{fontSize: 48, display: "block"}}>{t("logIn")}</h1>
 
-                    <p style={{color: "grey", display: "block"}}>with Email</p>
+                    <p style={{color: "grey", display: "block"}}>{t("withEmail")}</p>
 
                     <form class="form_login">
-                        Email<br/>
-                        <TextField id="filled-basic" label="Enter Your Email" variant="filled"  value={email}
+                        {t("email")}<br/>
+                        <TextField id="filled-basic" label={t("enterYourEmail")} variant="filled"  value={email}
                                    onChange={(e)=> setEmail(e.target.value)}/>
                         <br/>
-                        Password<br/>
-                        <TextField id="filled-basic" label="Enter Your Password" variant="filled" value={password}
+                        {t("password")}<br/>
+                        <TextField id="filled-basic" label={t("enterYourPassword")} variant="filled" value={password}
                                    onChange={e=> setPassword(e.target.value)}/>
                         <br/>
-                        <Button variant="contained" onClick={handleLogin}>Log In</Button>
+                        <Button variant="contained" onClick={handleLogin}>{t("logIn")}</Button>
                     </form>
-                    <a style={{textDecoration: "none"}} href="*"><p style={{color: "darkblue", display: "block"}}>Forgot password?</p></a>
+                    <a style={{textDecoration: "none"}} href="*"><p style={{color: "darkblue", display: "block"}}>{t("forgotPassword?")}</p></a>
                 </div>
 
             </section>
