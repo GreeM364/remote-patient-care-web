@@ -1,11 +1,21 @@
-.addNewHospitalAdmin, .addNewHospital, .addNewPatient{
+.addNewHospitalAdmin, .addNewHospital, .addNewPatient, .addNewDoctor, .addNewCaregiver, .addPatient, .createPatient{
     width: 70%;
     height: 55vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-content: space-between;
-    padding: 0;
+}
+.addNewCaregiver{
+    height: 45vh;
+}
+.addPatient{
+    height: 60vh;
+}
+.createPatient{
+    height: 70vh;
+}
+.addNewDoctor{
+    height: 65vh;
 }
 .addNewPatient{
     height: 20vh;
@@ -38,7 +48,7 @@
     margin: 25px;
 }
 .addNewHospital{
-    height: 20vh;
+    height: 25vh;
 }
 .card{
     width: 100%;
@@ -63,4 +73,9 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-content: space-around;
+}
+
+.custom-date-picker .MuiInputBase-root {
+    font-size: 16px; /* Увеличиваем размер поля ввода */
+    width: 275px; /* Устанавливаем ширину поля */
 }

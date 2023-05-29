@@ -68,7 +68,7 @@ function LogForm(props) {
                 <div class="login">
                     <img style={{height: "80px", width: "80px", margin: 0, display: "block"}} src={photo2}/>
 
-                    <h1 style={{fontSize: 48, display: "block"}}>{t("logIn")}</h1>
+                    <h1 style={{ fontSize: 48, display: "flex", justifyContent: "center " }}>{t("logIn")}</h1>
 
                     <p style={{color: "grey", display: "block"}}>{t("withEmail")}</p>
 

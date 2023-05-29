@@ -31,7 +31,7 @@ function Patients(props) {
                 .then(res => res.json())
                 .then((res) => {
                         console.log(res.result)
-                        console.log(res.result.filter(i => i.caregiverPatientId == null))
+                        console.log("caregiverPatientId filter: ", res.result.filter(i => i.caregiverPatientId == null))
                         setPatients(res.result.filter(i => i.caregiverPatientId == null));
                     }
                 )
@@ -72,7 +72,7 @@ function Patients(props) {
             })
                 .then((res) => res.json())
                 .then((res) => {
-                    console.log(res)
+                    console.log("CaregiverPatient:", res.result)
 
                 })
                 .catch((error) => {

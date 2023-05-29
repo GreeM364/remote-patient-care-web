@@ -29,7 +29,8 @@ export default function CardDocotr( props) {
                         setEndDay(endWorkingDay[0] + ":" + endWorkingDay[1])
                         getHospital(res.result.doctor.hospitalId)
 
-
+                        setEmail(res.result.email)
+                        setPhone(res.result.phone)
                     }
                 )
         }else {
@@ -46,6 +47,7 @@ export default function CardDocotr( props) {
                         let endWorkingDay = res.result.endWorkingDay.split("T")[1].split(".")[0].split(":")
                         setBegginingDay(begginingWorkingDay[0] + ":" + begginingWorkingDay[1])
                         setEndDay(endWorkingDay[0] + ":" + endWorkingDay[1])
+
                         getHospital(res.result.hospitalId)
 
                     }
@@ -76,6 +78,8 @@ export default function CardDocotr( props) {
     const [hospitalName, setHospitlName] = useState("")
     const [begginingDay, setBegginingDay] = useState("")
     const [endDay, setEndDay] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
     return (
         <Card sx={{ maxWidth: '100%' }}>
             <CardActionArea>
@@ -94,11 +98,11 @@ export default function CardDocotr( props) {
                         <TextField className="field"
                             disabled
                             id="outlined-disabled"
-                            label={t("email")} value={user.email}
+                            label={t("email")} value={email}
                         /><TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label={t("phone")} value={user.phone}
+                        label={t("phone")} value={phone}
                     /><TextField className="field"
                         disabled
                         id="outlined-disabled"

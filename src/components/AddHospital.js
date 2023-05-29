@@ -84,11 +84,12 @@ function AddHospital(props) {
                            value={name} onChange={(e)=> setName(e.target.value)}/>
                 <TextField className="input" id="outlined-basic" label={t("address")} variant="outlined"
                            value={address} onChange={(e)=> setAddress(e.target.value)}/>
-
                 {props.hospitalId === "" ? <Button className="register" variant="contained" onClick={AddHostipal}>{t('register')}</Button>
                     : <Button className="register" variant="contained" onClick={EditHostipal}>{t('change')}</Button>}
+                <Button  className="register" variant="contained" size="small" color="error" onClick={() => props.onHospital(false)}>
+                    {t("close")}
+                </Button>
             </form>
-
         </div>
     );
 }

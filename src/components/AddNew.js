@@ -134,13 +134,14 @@ function AddNew(props) {
         const day = "" + date.$D;
         let dateObj = date.$y + "-";
         if(month.length == 1)
-            dateObj += "0" + date.$M + "-"
+            dateObj += "0" + (date.$M + 1) + "-"
         else
-            dateObj += date.$M + "-"
+            dateObj += (date.$M + 1) + "-"
         if(day.length == 1)
             dateObj += "0" + date.$D
         else
             dateObj += date.$D
+
         setBirthDateFull(dateObj)
         setBirthDate(date);
     };
@@ -161,19 +162,13 @@ function AddNew(props) {
                            value={phone} onChange={(e)=> setPhone(e.target.value)}/>
                 <TextField className="input" id="outlined-basic" label={t("email")} variant="outlined"
                            value={email} onChange={(e)=> setEmail(e.target.value)}/>
-                <LocalizationProvider className="input" dateAdapter={AdapterDayjs}>
-                    <DatePicker value={birthDate}
-                                onChange={handleDateChange} />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker onChange={handleDateChange} className="custom-date-picker"/>
                 </LocalizationProvider>
                 {props.hospitalAdmin === "" && <TextField className="input" id="outlined-basic" label={t("password")} variant="outlined"
                            value={password} onChange={(e)=> setPassword(e.target.value)}/>}
-                <TextField  className="input"
-                    id="outlined-select-currency"
-                    select
-                    label={hospitalName}
-                    helperText={t("selectHospital")}
-                             defaultChecked={hospitalId}
-                >
+                <TextField  className="input" id="outlined-select-currency" select label={hospitalName} helperText={t("selectHospital")}
+                            defaultChecked={hospitalId}>
                     {hospitals.map((option) => (
                         <MenuItem key={option.id} onClick={()=> setHospitalId(option.id)} value={<option value="" className="id"></option>}>
                             {option.name}
@@ -182,6 +177,9 @@ function AddNew(props) {
                 </TextField>
                 {props.hospitalAdmin === "" ? <Button className="register" variant="contained" onClick={AddHostipalAdmin}>{t('register')}</Button>
                     : <Button className="register" variant="contained" onClick={EditHostipalAdmin}>{t('change')}</Button>}
+                <Button  className="register" variant="contained" size="small" color="error" onClick={() => props.onAddAdmin(false)}>
+                    {t("close")}
+                </Button>
             </form>
 
         </div>

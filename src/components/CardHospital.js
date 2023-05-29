@@ -22,6 +22,8 @@ export default function CardHospital( props) {
             .then((res) => {
                     console.log(res.result)
                     setHospital(res.result)
+                    setName(res.result.name)
+                    setAddress(res.result.address)
                     // setBirthDay(res.result.birthDate.split("T")[0])
                     // getHospital(res.result.hospitalId)
 
@@ -32,6 +34,8 @@ export default function CardHospital( props) {
         getHospital();
     }, []);
     const [hospital, setHospital] = useState([])
+    const [name, setName] = useState("")
+    const [address, setAddress] = useState("")
     return (
         <Card sx={{ display: 'flex', width: '100%' }}>
             <CardMedia
@@ -45,11 +49,11 @@ export default function CardHospital( props) {
                     <TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label={t("name")} value={hospital.name}
+                        label={t("name")} value={name}
                         /><TextField className="field"
                                      disabled
                                      id="outlined-disabled"
-                                     label={t("address")} value={hospital.address}
+                                     label={t("address")} value={address}
                     />
                     <Button sx={{width: "60%"}} size="small" color="primary" onClick={() => props.onViewHospital(false)}>
                         {t("close")}

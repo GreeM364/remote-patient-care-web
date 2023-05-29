@@ -21,9 +21,13 @@ export default function CardAdmin( props) {
             })
                 .then(res => res.json())
                 .then((res) => {
-                        console.log(res.result.hospitalAdministrator)
+                        // console.log(res.result.hospitalAdministrator)
+
                         setUser(res.result.hospitalAdministrator)
                         setBirthDay(res.result.hospitalAdministrator.birthDate.split("T")[0])
+                        setEmail(res.result.email)
+                        setPhone(res.result.phone)
+                        // console.log(gA.email)
                         getHospital(res.result.hospitalAdministrator.hospitalId)
 
                     }
@@ -36,9 +40,10 @@ export default function CardAdmin( props) {
             })
                 .then(res => res.json())
                 .then((res) => {
-                        console.log(res.result)
+                        // console.log(res.result)
                         setUser(res.result)
                         setBirthDay(res.result.birthDate.split("T")[0])
+
                         getHospital(res.result.hospitalId)
 
                     }
@@ -61,12 +66,15 @@ export default function CardAdmin( props) {
             .then(res => res.json())
             .then((res) => {
                     setHospitlName(res.result.name)
+
                 }
             )
     }
     const [user, setUser] = useState([])
     const [birthDay, setBirthDay] = useState("")
     const [hospitalName, setHospitlName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
     return (
         <Card sx={{ maxWidth: '100%'}} >
             <CardActionArea>
@@ -85,11 +93,11 @@ export default function CardAdmin( props) {
                         <TextField className="field"
                             disabled
                             id="outlined-disabled"
-                            label={t("email")} value={user.email}
+                            label={t("email")} value={email}
                         /><TextField className="field"
                         disabled
                         id="outlined-disabled"
-                        label={t("phone")} value={user.phone}
+                        label={t("phone")} value={phone}
                     /><TextField className="field"
                         disabled
                         id="outlined-disabled"

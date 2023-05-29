@@ -37,6 +37,7 @@
   "findPatient": "العثور على مريض",
   "findDoctor":"العثور على طبيب",
   "findAdmin":"العثور على مسؤول",
+  "findCaregiver":"ابحث عن مقدم الرعاية",
   "firstName": "الاسم الأول",
   "forgotPassword?": "نسيت كلمة المرور؟",
   "lastName": "اسم العائلة",

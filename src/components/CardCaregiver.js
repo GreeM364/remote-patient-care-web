@@ -23,7 +23,8 @@ export default function CardAdmin( props) {
                         console.log(res.result.caregiverPatient)
                         setUser(res.result.caregiverPatient)
                         setBirthDay(res.result.caregiverPatient.birthDate.split("T")[0])
-
+                        setEmail(res.result.email)
+                        setPhone(res.result.phone)
                     }
                 )
         }
@@ -37,6 +38,7 @@ export default function CardAdmin( props) {
                         console.log(res.result)
                         setUser(res.result)
                         setBirthDay(res.result.birthDate.split("T")[0])
+
 
                     }
                 )
@@ -52,34 +54,26 @@ export default function CardAdmin( props) {
     }
     const [user, setUser] = useState([])
     const [birthDay, setBirthDay] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
     return (
         <Card sx={{ maxWidth: '100%' }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
-                    height="250"
+                    height="250px"
                     style={{ width: '250px', margin: "0px 50px" }}
                     image={admin}
                     alt="green iguana"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div" style={{margin: "0px 50px"}}>
+                    <Typography gutterBottom variant="h5" component="div">
                         {user.firstName + " " + user.lastName + " " + user.patronymic}
                     </Typography>
-                    <Typography className="typography" variant="body2" color="text.secondary">
-                        <TextField className="field"
-                                   disabled
-                                   id="outlined-disabled"
-                                   label={t("email")} value={user.email}
-                        /><TextField className="field"
-                                     disabled
-                                     id="outlined-disabled"
-                                     label={t("phone")} value={user.phone}
-                    /><TextField className="field"
-                                 disabled
-                                 id="outlined-disabled"
-                                 label={t("birthDay")} value={birthDay}
-                    />
+                    <Typography className="typography" variant="body2" color="text.secondary" style={{ display: 'flex' }}>
+                        <TextField className="field" disabled id="outlined-disabled" label={t("email")} value={email} />
+                        <TextField className="field" disabled id="outlined-disabled" label={t("phone")} value={phone} />
+                        <TextField className="field" disabled id="outlined-disabled" label={t("birthDay")} value={birthDay} />
                     </Typography>
                 </CardContent>
             </CardActionArea>

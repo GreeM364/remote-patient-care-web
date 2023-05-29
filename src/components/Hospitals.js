@@ -28,7 +28,6 @@ function Hospitals(props) {
             {addHospital && <AddHospital hospitalId="" hospitalId={hospital} onHospital={setAddHospital} current_token={props.current_token}/>}
             {viewHospital && <CardHospital hospital={hospital} onViewHospital={setViewHospital}
                                      current_token={props.current_token}/>}
-
         </div>
     );
 }

@@ -142,9 +142,9 @@ function AddNew(props) {
         const day = "" + date.$D;
         let dateObj = date.$y + "-";
         if(month.length == 1)
-            dateObj += "0" + date.$M + "-"
+            dateObj += "0" + (date.$M + 1) + "-"
         else
-            dateObj += date.$M + "-"
+            dateObj += (date.$M + 1) + "-"
         if(day.length == 1)
             dateObj += "0" + date.$D
         else
@@ -158,7 +158,7 @@ function AddNew(props) {
 
     return (
         <div className="AddNew">
-            <form className="addNewHospitalAdmin">
+            <form className="addNewDoctor">
                 <TextField className="input" id="outlined-basic" label={t("firstName")} variant="outlined"
                            value={firstName} onChange={(e)=> setFirstName(e.target.value)}/>
                 <TextField className="input" id="outlined-basic" label={t("lastName")} variant="outlined"
@@ -174,8 +174,7 @@ function AddNew(props) {
                 <TextField className="input" id="outlined-basic" label={t("endWorkingDay")} variant="outlined"
                            value={endDay} onChange={(e)=> setEndDay(e.target.value)}/>
                 <LocalizationProvider className="input" dateAdapter={AdapterDayjs}>
-                    <DatePicker value={birthDate}
-                                onChange={handleDateChange} />
+                    <DatePicker className="custom-date-picker" onChange={handleDateChange} />
                 </LocalizationProvider>
                 {props.doctor === "" && <TextField className="input" id="outlined-basic" label={t("password")} variant="outlined"
                                                           value={password} onChange={(e)=> setPassword(e.target.value)}/>}
@@ -194,6 +193,9 @@ function AddNew(props) {
                 </TextField>
                 {props.doctor === "" ? <Button className="register" variant="contained" onClick={AddDoctor}>{t("register")}</Button>
                     : <Button className="register" variant="contained" onClick={EditDoctor}>{t("change")}</Button>}
+                <Button  className="register" variant="contained" size="small" color="error" onClick={() => props.onAddDoctor(false)}>
+                    {t("close")}
+                </Button>
             </form>
 
         </div>

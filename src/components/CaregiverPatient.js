@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import "../css/main.css"
+import Header from "./Header.";
 import BasicTable from "./BasicTable";
 import CardCaregiver from "./CardCaregiver";
 import AddCaregiverPatient from "./AddCaregiverPatient";

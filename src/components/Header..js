@@ -9,7 +9,7 @@ import {useTranslation} from "react-i18next";
 
 function Header(props) {
     const { t } = useTranslation();
-
+    console.log(props.choose)
 
     return (
         <div className="Header">
@@ -57,6 +57,17 @@ function Header(props) {
                     <SearchIcon />
                 </IconButton>
             </div>}
+            {props.choose === "caregiverPatients" && props.roleUser === "HospitalAdministrator" &&
+                <div class="search">
+                    <InputBase
+                        sx={{ ml: 1, flex: 1, width: "88%" }}
+                        placeholder={t("findCaregiver")}
+                        inputProps={{ 'aria-label': 'find doctor' }}
+                    />
+                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                        <SearchIcon />
+                    </IconButton>
+                </div>}
 
             <div class="account_header" onClick={() => props.onView(true)}>
                 <div class="name_of_account">

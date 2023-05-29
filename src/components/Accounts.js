@@ -29,7 +29,7 @@ function Accounts(props) {
                     <AddCircleOutlineIcon/> {t('addNewAdmin')}
                 </Button>}
             {props.roleUser === "HospitalAdministrator" && !addAdmin && !addDoctor && !viewDoctor && !viewAdmin &&
-                <Button onClick={setAddDoctor} variant="contained">
+                <Button onClick={setAddDoctor} className="add" variant="contained">
                     <AddCircleOutlineIcon/>{t('addNewDoctor')}
                 </Button>}
             {props.roleUser === "GlobalAdmin" && !addAdmin && !addDoctor && !viewDoctor && !viewAdmin &&
@@ -45,6 +45,7 @@ function Accounts(props) {
                                  current_token={props.current_token}/>}
             {viewAdmin && <CardAdmin hospitalAdmin={hospitalAdmin} onViewAdmin={setViewAdmin}
                                      current_token={props.current_token}/>}
+            {addDoctor && <h1>{t('createNewDoctor')}</h1>}
             {addDoctor && <AddDoctor doctor={doctor} onAddDoctor={setAddDoctor} current_token={props.current_token}/>}
             {viewDoctor && <CardDoctor doctor={doctor} onViewDoctor={setViewDoctor}
                                        current_token={props.current_token}/>}

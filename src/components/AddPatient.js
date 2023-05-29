@@ -90,6 +90,7 @@ function AddNew(props) {
                     const hospital = res.result
                     setHospitalName(hospital.name)
 
+
                 }
             )
 
@@ -103,9 +104,8 @@ function AddNew(props) {
         })
             .then(res => res.json())
             .then((res) => {
-                    console.log(res.result)
-                    const hospital = res.result
-                    setDoctorName(hospital.firstName + " " + hospital.lastName)
+                    console.log("Doctor: ", res.result)
+                    setDoctorName(res.result.firstName + " " + res.result.lastName)
 
                 }
             )
@@ -216,7 +216,7 @@ function AddNew(props) {
 
     return (
         <div className="AddNew">
-            <form className="addNewHospitalAdmin">
+            <form className="createPatient">
                 <TextField className="input" id="outlined-basic" label={t("firstName")} variant="outlined"
                            value={firstName} onChange={(e)=> setFirstName(e.target.value)}/>
                 <TextField className="input" id="outlined-basic" label={t("lastName")} variant="outlined"
@@ -228,7 +228,7 @@ function AddNew(props) {
                 <TextField className="input" id="outlined-basic" label={t("email")} variant="outlined"
                            value={email} onChange={(e)=> setEmail(e.target.value)}/>
                 <LocalizationProvider className="input" dateAdapter={AdapterDayjs}>
-                    <DatePicker value={birthDate}
+                    <DatePicker className="custom-date-picker"
                                 onChange={handleDateChange} />
                 </LocalizationProvider>
                 {props.patient === "" && <TextField className="input" id="outlined-basic" label={t("password")} variant="outlined"
@@ -274,6 +274,9 @@ function AddNew(props) {
                 </TextField>
                 {props.patient === "" ? <Button className="register" variant="contained" onClick={AddPatient}>{t('register')}</Button>
                     : <Button className="register" variant="contained" onClick={EditPatient}>{t('change')}</Button>}
+                <Button  className="register" variant="contained" size="small" color="error" onClick={() => props.onAddPatient(false)}>
+                    {t("close")}
+                </Button>
             </form>
 
         </div>

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import moment from 'moment';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 
 const Form1 = ({ patientId }) => {
     const [connection, setConnection] = useState(null);
     const [physicalMessages, setPhysicalMessages] = useState([]);
+    const [criticalMessages, setCriticalMessages] = useState([]);
 
     const startConnection = async () => {
         const hubConnection = new HubConnectionBuilder()
@@ -28,6 +29,16 @@ const Form1 = ({ patientId }) => {
             ]);
         });
 
+        hubConnection.on('CriticalCondition', (criticalCondition) => {
+            setCriticalMessages((prevMessages) => [
+                ...prevMessages,
+                {
+                    message: criticalCondition.message,
+                    time: moment(criticalCondition.dateTime).format('HH:mm:ss'),
+                },
+            ]);
+        });
+
         await hubConnection.start();
         hubConnection.invoke('Enter', patientId).catch((err) => console.error(err));
         setConnection(hubConnection);
@@ -41,7 +52,9 @@ const Form1 = ({ patientId }) => {
             }
         };
     }, [connection]);
+
     const { t } = useTranslation();
+
     const renderPhysicalMessages = () => {
         return (
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
@@ -99,10 +112,31 @@ const Form1 = ({ patientId }) => {
         );
     };
 
+    const renderCriticalMessages = () => {
+        return (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '80%', margin: '0 auto' }}>
+                <h2>{t("criticalMessages")}</h2>
+                <ul style={{ height: '300px', overflowY: 'auto', textAlign: 'center', width: "100%", paddingLeft: '0' }}>
+                    {criticalMessages.map((message, index) => (
+                        <li key={index} style={{ listStyle: 'inside' }}>
+                            <strong style={{color: "red"}}>{t("message")}:</strong> {message.message}
+                            <br />
+                            <strong>{t("time")}:</strong> {message.time}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+
+
     return (
         <div>
             <button onClick={startConnection}>{t("viewConditionInRealTime")}</button>
-            <div style={{ width: '100%' }}>{renderPhysicalMessages()}</div>
+            <div style={{ width: '100%' }}>
+                {renderPhysicalMessages()}
+                {renderCriticalMessages()}
+            </div>
         </div>
     );
 };
