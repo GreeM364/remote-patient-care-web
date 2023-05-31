@@ -21,7 +21,7 @@ function Hospitals(props) {
     return (
         <div className="Hospitals">
             {!addHospital && !viewHospital && <h1>{t("hospitals")}</h1>}
-            {!addHospital && !viewHospital && <Button onClick={setAddHospital}  className="add" variant="contained"><AddCircleOutlineIcon/>{t("addNewHospital")}</Button>}
+            {!addHospital && !viewHospital && <Button onClick={setAddHospital}  className="add" variant="contained"><AddCircleOutlineIcon/>{t("createNewHospital")}</Button>}
             {!addHospital && !viewHospital && <BasicTable page={'hospitals'} current_token={props.current_token} onHId={setHospital}
                                                           titles={titlesGlobalAdmin} onViewHospital={setViewHospital} onHospital={setAddHospital} roleUser={props.roleUser}/>}
             {addHospital && <h1>{t("createHospital")}</h1>}

@@ -20,6 +20,12 @@ function MainContainer(props) {
         if(props.roleUser === "Doctor" || props.roleUser === "CaregiverPatient")
             setChoose("patients")
     }
+
+    const handleSearchQueryChange = (query) => {
+        console.log("Input main: ", query)
+        setSearchQuery(query);
+    };
+
     useEffect(() => {
         getChoose();
     }, []);
@@ -28,13 +34,13 @@ function MainContainer(props) {
     const[view, setView] = useState(false)
     const[add, setAdd] = useState(false)
     const[id, setId] = useState("")
-
+    const [searchQuery, setSearchQuery] = useState('');
 
     return (
         <div className="MainContainer">
             <Menu setChoose={setChoose} roleUser={props.roleUser} choose={choose} onLog={props.onLog}/>
             <div class="mainDiv">
-                <Header nameUser={props.nameUser} choose={choose} roleUser={props.roleUser} onView={setView}/>
+                <Header nameUser={props.nameUser} choose={choose} roleUser={props.roleUser} onView={setView} onSearchQueryChange={handleSearchQueryChange}/>
                 <hr width="90%"/>
                 {choose === "accounts" && !view && !add &&
                     <Accounts current_token={props.current_token} roleUser={props.roleUser}/>}
@@ -43,7 +49,7 @@ function MainContainer(props) {
                 {choose === "caregiverPatients" && !view && !add &&
                     <CaregiverPatient current_token={props.current_token} roleUser={props.roleUser}/>}
                 {choose === "patients" && !view && !add &&
-                    <Patients current_token={props.current_token} idUser={props.idUser} roleUser={props.roleUser}/>}
+                    <Patients current_token={props.current_token} idUser={props.idUser} roleUser={props.roleUser} searchQuery={searchQuery}/>}
                 {choose === "addPatients" && !view && !add &&
                     <AddPatientsToDoctor current_token={props.current_token} idUser={props.idUser} roleUser={props.roleUser}/>}
                 {choose === "payments" && !view && !add &&

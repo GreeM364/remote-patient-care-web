@@ -26,11 +26,11 @@ function Accounts(props) {
             {!addAdmin && !addDoctor && !viewDoctor && !viewAdmin && <h1>{t('accounts')}</h1>}
             {props.roleUser === "GlobalAdmin" && !addAdmin && !addDoctor && !viewDoctor && !viewAdmin &&
                 <Button onClick={setAddAdmin} className="add" variant="contained">
-                    <AddCircleOutlineIcon/> {t('addNewAdmin')}
+                    <AddCircleOutlineIcon/> {t('createNewAdmin')}
                 </Button>}
             {props.roleUser === "HospitalAdministrator" && !addAdmin && !addDoctor && !viewDoctor && !viewAdmin &&
                 <Button onClick={setAddDoctor} className="add" variant="contained">
-                    <AddCircleOutlineIcon/>{t('addNewDoctor')}
+                    <AddCircleOutlineIcon/>{t('createNewDoctor')}
                 </Button>}
             {props.roleUser === "GlobalAdmin" && !addAdmin && !addDoctor && !viewDoctor && !viewAdmin &&
                 <BasicTable page="accounts" onHospitalAdmin={setHospitalAdmin} onViewAdmin={setViewAdmin}

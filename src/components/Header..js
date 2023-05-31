@@ -7,13 +7,18 @@ import "../css/header.css"
 import {useTranslation} from "react-i18next";
 
 
-function Header(props) {
+function Header({ nameUser, choose, roleUser, onView, onSearchQueryChange }) {
     const { t } = useTranslation();
-    console.log(props.choose)
+
+    const handleInputChange = (e) => {
+        const query = e.target.value;
+        console.log('Input header: ', query);
+        onSearchQueryChange(query);
+    };
 
     return (
         <div className="Header">
-            {props.choose === "accounts" && props.roleUser === "GlobalAdmin" &&
+            {choose === "accounts" && roleUser === "GlobalAdmin" &&
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
@@ -24,7 +29,7 @@ function Header(props) {
                     <SearchIcon />
                 </IconButton>
             </div>}
-            {props.choose === "accounts" && props.roleUser === "HospitalAdministrator" &&
+            {choose === "accounts" && roleUser === "HospitalAdministrator" &&
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
@@ -35,7 +40,7 @@ function Header(props) {
                     <SearchIcon />
                 </IconButton>
             </div>}
-            {props.choose === "hospitals" && props.roleUser === "GlobalAdmin" &&
+            {choose === "hospitals" && roleUser === "GlobalAdmin" &&
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
@@ -46,18 +51,19 @@ function Header(props) {
                     <SearchIcon />
                 </IconButton>
             </div>}
-            {props.choose === "patients" && (props.roleUser === "HospitalAdministrator" || props.roleUser === "Doctor" || props.roleUser === "CaregiverPatient") &&
+            {choose === "patients" && (roleUser === "HospitalAdministrator" || roleUser === "Doctor" || roleUser === "CaregiverPatient") &&
             <div class="search">
                 <InputBase
                     sx={{ ml: 1, flex: 1, width: "88%" }}
                     placeholder={t("findPatient")}
                     inputProps={{ 'aria-label': 'find doctor' }}
+                    onChange={handleInputChange}
                 />
                 <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
                     <SearchIcon />
                 </IconButton>
             </div>}
-            {props.choose === "caregiverPatients" && props.roleUser === "HospitalAdministrator" &&
+            {choose === "caregiverPatients" && roleUser === "HospitalAdministrator" &&
                 <div class="search">
                     <InputBase
                         sx={{ ml: 1, flex: 1, width: "88%" }}
@@ -69,10 +75,10 @@ function Header(props) {
                     </IconButton>
                 </div>}
 
-            <div class="account_header" onClick={() => props.onView(true)}>
+            <div class="account_header" onClick={() => onView(true)}>
                 <div class="name_of_account">
-                    <h4 style={{margin: 1}}>{props.nameUser}</h4>
-                    <p style={{margin:0, color: "grey"}}>{props.roleUser}</p>
+                    <h4 style={{margin: 1}}>{nameUser}</h4>
+                    <p style={{margin:0, color: "grey"}}>{roleUser}</p>
                 </div>
                 <img style={{height: "50px", width: "50px", margin: 0, display: "block"}} src={photo2}/>
             </div>

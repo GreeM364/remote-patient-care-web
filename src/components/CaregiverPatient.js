@@ -23,7 +23,7 @@ function Hospitals(props) {
         <div className="Hospitals">
             {!addCaregiverPatient && !viewCaregiverPatient && <h1>{t("caregiverPatients")}</h1>}
             {!addCaregiverPatient && !viewCaregiverPatient && <Button onClick={setAddCaregiverPatient}  className="add"
-                                                                      variant="contained"><AddCircleOutlineIcon/> {t("addNewCaregiver")}</Button>}
+                                                                      variant="contained"><AddCircleOutlineIcon/> {t("createNewCaregiver")}</Button>}
             {!addCaregiverPatient && !viewCaregiverPatient && <BasicTable page={'caregiverPatients'} current_token={props.current_token}
                                                                           onCaregiverPatient={setCaregiverPatient}
                                                           titles={titlesPatient} onViewCaregiverPatient={setViewCaregiverPatient}

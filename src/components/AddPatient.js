@@ -69,6 +69,8 @@ function AddNew(props) {
                         setPhone(admin.phone)
                         setBirthDateFull(admin.birthDate)
                         setHospitalId(admin.hospitalId)
+                        setDoctorId(admin.doctorId)
+                        setCaregiverPatientId(admin.caregiverPatientId)
                         getHospital(admin.hospitalId);
                         getDoctor(admin.doctorId);
                         getCaregiverPatient(admin.caregiverPatientId);
@@ -89,42 +91,41 @@ function AddNew(props) {
             .then((res) => {
                     const hospital = res.result
                     setHospitalName(hospital.name)
-
-
                 }
             )
 
 
     }
     const getDoctor =(e) =>{
-
-        fetch(`https://localhost:7070/api/Doctor/${e}`, {
-            method: "GET",
-            headers: {"Authorization": "Bearer " + props.current_token},
-        })
-            .then(res => res.json())
-            .then((res) => {
-                    console.log("Doctor: ", res.result)
-                    setDoctorName(res.result.firstName + " " + res.result.lastName)
-
-                }
-            )
+        if (e !== null)
+        {
+            fetch(`https://localhost:7070/api/Doctor/${e}`, {
+                method: "GET",
+                headers: {"Authorization": "Bearer " + props.current_token},
+            })
+                .then(res => res.json())
+                .then((res) => {
+                        console.log("Doctor: ", res.result)
+                        setDoctorName(res.result.firstName + " " + res.result.lastName)
+                    }
+                )
+        }
     }
     const getCaregiverPatient =(e) =>{
-        fetch(`https://localhost:7070/api/CaregiverPatient/${e}`, {
-            method: "GET",
-            headers: {"Authorization": "Bearer " + props.current_token},
-        })
-            .then(res => res.json())
-            .then((res) => {
-                    const hospital = res.result
-                    console.log(e)
-                    setCaregiverPatientName(hospital.firstName + " " + hospital.lastName)
-
-                }
-            )
-
-
+        if(e !== null)
+        {
+            fetch(`https://localhost:7070/api/CaregiverPatient/${e}`, {
+                method: "GET",
+                headers: {"Authorization": "Bearer " + props.current_token},
+            })
+                .then(res => res.json())
+                .then((res) => {
+                        const hospital = res.result
+                        console.log(e)
+                        setCaregiverPatientName(hospital.firstName + " " + hospital.lastName)
+                    }
+                )
+        }
     }
     const [hospitals, setHospitals] = useState([])
     const [doctors, setDoctors] = useState([])
@@ -133,7 +134,7 @@ function AddNew(props) {
         e.preventDefault();
         if (firstName !== "" && lastName !== "" && patronymic !== "") {
             let user = {}
-            if(caregiverPatientId === "" || doctorId ==="")
+            if(caregiverPatientId === "" || doctorId === "")
                 user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
                     phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId};
             else
@@ -160,6 +161,8 @@ function AddNew(props) {
     const EditPatient = (e) => {
         e.preventDefault();
         if (firstName !== "" && lastName !== "" && patronymic !== "") {
+            console.log(caregiverPatientId)
+            console.log(doctorId)
             const user = { firstName: firstName, lastName: lastName, patronymic: patronymic,
                 phone: phone, email: email, password: password, birthDate: birthDateFull, hospitalId: hospitalId,
                 doctorId: doctorId, caregiverPatientId: caregiverPatientId};
@@ -251,10 +254,11 @@ function AddNew(props) {
                             select
                             label={doctorName}
                             helperText={t("selectDoctor")}
-                            defaultChecked={doctorId}
+                            defaultValue={doctorId}
                 >
                     {doctors.map((option) => (
-                        <MenuItem key={option.id} onClick={()=> setDoctorId(option.id)} value={<option value="" className="id"></option>}>
+                        <MenuItem key={option.id} onClick={()=> {console.log("doctor",option)
+                                                                setDoctorId(option.id)}} value={<option value="" className="id"></option>}>
                             {option.firstName} {option.lastName}
                         </MenuItem>
                     ))}
@@ -266,8 +270,10 @@ function AddNew(props) {
                             helperText={t("selectCaregiver")}
                             defaultChecked={caregiverPatientId}
                 >
+
                     {caregiverPatients.map((option) => (
-                        <MenuItem key={option.id} onClick={()=> setCaregiverPatientId(option.id)} value={<option value="" className="id"></option>}>
+                        <MenuItem key={option.id} onClick={()=> {console.log("caregiver", option)
+                                                                 setCaregiverPatientId(option.id)}} value={<option value="" className="id"></option>}>
                             {option.firstName} {option.lastName}
                         </MenuItem>
                     ))}

@@ -30,13 +30,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
+
     '&:last-child td, &:last-child th': {
         border: 0,
     },
 }));
 export default function BasicTable(props) {
+    const [data, setData] = useState([])
+    const [doctor, setDoctor] = useState("")
+    const [caregiver, setCaregiver] = useState("");
     const { t } = useTranslation();
+    console.log("Input table: ", props.searchQuery)
     const getData =(e) =>{
         if (props.page === "accounts" && props.roleUser === "GlobalAdmin") {
             fetch(`https://localhost:7070/api/HospitalAdministrator`, {
@@ -67,7 +71,7 @@ export default function BasicTable(props) {
             })
                 .then(res => res.json())
                 .then((res) => {
-                    console.log(res.result)
+                        console.log(res.result)
                         setData(res.result);
                     }
                 )
@@ -124,75 +128,106 @@ export default function BasicTable(props) {
     useEffect(() => {
         getData();
     }, []);
-    const getDoctor =(e) =>{
 
-        console.log(e)
-        if(e != null) {
-            fetch(`https://localhost:7070/api/Doctor/${e}`, {
-                method: "GET",
-                headers: {"Authorization": "Bearer " + props.current_token},
-            })
-                .then(res => res.json())
-                .then((res) => {
-                        const doctorObj = res.result
-                        console.log(doctorObj)
-                        setDoctor(doctorObj.firstName + " " + doctorObj.lastName)
+    useEffect(() => {
+        data.forEach((row) => {
+            if (row.doctorId != null) {
+                fetch(`https://localhost:7070/api/Doctor/${row.doctorId}`, {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + props.current_token },
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        const doctorObj = res.result;
+                        console.log(doctorObj);
+                        setDoctor((prevDoctor) => ({
+                            ...prevDoctor,
+                            [row.id]: doctorObj.firstName + " " + doctorObj.lastName,
+                        }));
+                    });
+            } else {
+                setDoctor((prevDoctor) => ({
+                    ...prevDoctor,
+                    [row.id]: "------------------",
+                }));
+            }
+            if (row.caregiverPatientId != null) {
+                fetch(`https://localhost:7070/api/CaregiverPatient/${row.caregiverPatientId}`, {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + props.current_token },
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        const caregiverObj = res.result;
+                        console.log(caregiverObj);
+                        setCaregiver((prevCaregiver) => ({
+                            ...prevCaregiver,
+                            [row.id]: caregiverObj.firstName + " " + caregiverObj.lastName,
+                        }));
+                    });
+            } else {
+                setCaregiver((prevCaregiver) => ({
+                    ...prevCaregiver,
+                    [row.id]: "------------------",
+                }));
+            }
+        });
+    }, [data]);
 
-                    }
-                )
-        }
-        return doctor
+    const filteredData = data.filter((row) => {
+        const fullName = `${row.firstName} ${row.lastName}`;
+        const email = row.email;
+        const searchQuery = props.searchQuery?.toLowerCase() || '';
+
+        return (
+            fullName.toLowerCase().includes(searchQuery) ||
+            email.toLowerCase().includes(searchQuery)
+        );
+    });
 
 
-    }
+    return (
+        <TableContainer className="TableBasic" component={Paper}>
+            {props.page === "accounts" && props.roleUser === "GlobalAdmin" &&
+                <Table sx={{ minWidth: 650 }}  aria-label="simple table">
+                    <TableHead>
+                        <TableRow
+                            key={props.titles[0]}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            {props.titles.map((title) => (
 
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {title} <SortIcon/>
+                                </StyledTableCell>
 
-    const [data, setData] = useState([])
-    const [doctor, setDoctor] = useState("")
+                            ))}
+                            <StyledTableCell component="th" scope="row">
 
-
-  return (
-      <TableContainer className="TableBasic" component={Paper}>
-          {props.page === "accounts" && props.roleUser === "GlobalAdmin" &&
-          <Table sx={{ minWidth: 650 }}  aria-label="simple table">
-              <TableHead>
-                  <TableRow
-                      key={props.titles[0]}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    {props.titles.map((title) => (
-
-                          <StyledTableCell align="center" component="th" scope="row">
-                            {title} <SortIcon/>
-                          </StyledTableCell>
-
-                      ))}
-                      <StyledTableCell component="th" scope="row">
-
-                      </StyledTableCell>
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((row) => (
-                    <StyledTableRow
-                        key={row.id}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <StyledTableCell component="th" scope="row">
-                        {row.firstName} {row.lastName}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">{row.phone}</StyledTableCell>
-                      <StyledTableCell align="left">{row.email}</StyledTableCell>
-                      <StyledTableCell align="left">{row.hospitalId}</StyledTableCell>
-                      <StyledTableCell align="left"><ActionsTable onHospitalAdmin={props.onHospitalAdmin} onViewAdmin={props.onViewAdmin}
-                                                                  current_token={props.current_token}
-                                                                  page={props.page} role={props.roleUser}
-                                                                  onAddAdmin={props.onAddAdmin} hospitalAdminId={row.id}/></StyledTableCell>
-                    </StyledTableRow>
-                ))}
-              </TableBody>
-          </Table>
-      }
+                            </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <StyledTableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {row.firstName} {row.lastName}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">{row.phone}</StyledTableCell>
+                                <StyledTableCell align="center">{row.email}</StyledTableCell>
+                                <StyledTableCell align="center">{row.hospitalId}</StyledTableCell>
+                                <StyledTableCell align="center"><ActionsTable onHospitalAdmin={props.onHospitalAdmin} onViewAdmin={props.onViewAdmin}
+                                                                            current_token={props.current_token}
+                                                                            page={props.page} role={props.roleUser}
+                                                                            onAddAdmin={props.onAddAdmin} hospitalAdminId={row.id}/></StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            }
             {props.page === "hospitals" && props.roleUser === "GlobalAdmin" && <Table sx={{ minWidth: 650 }}  aria-label="simple table">
                 <TableHead>
                     <TableRow
@@ -211,154 +246,154 @@ export default function BasicTable(props) {
                         </StyledTableCell>
                     </TableRow>
                 </TableHead>
-            <TableBody>
-                {data.map((row) => (
-                    <StyledTableRow
-                        key={row.id}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <StyledTableCell component="th" scope="row">
-                            {row.address}
-                        </StyledTableCell>
-                        <StyledTableCell align="left">{row.name}</StyledTableCell>
-                        <StyledTableCell align="left">{row.dataPaySubscription.split("T")[0]}</StyledTableCell>
-                        <StyledTableCell align="left">{row.doctorsCount}</StyledTableCell>
-                        <StyledTableCell align="left">{row.patientsCount}</StyledTableCell>
-                        <StyledTableCell align="left"><ActionsTable current_token={props.current_token} onHId={props.onHId}
-                                                                    page={props.page} role={props.roleUser} onViewHospital={props.onViewHospital}
-                                                                    onHospital={props.onHospital} hospitalId={row.id}/></StyledTableCell>
-                    </StyledTableRow>
-                ))}
-            </TableBody>
-        </Table>}
-          {props.page === "accounts" && props.roleUser === "HospitalAdministrator" &&
-              <Table sx={{ minWidth: 650 }}  aria-label="simple table">
-                  <TableHead>
-                      <TableRow
-                          key={props.titles[0]}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                          {props.titles.map((title) => (
+                <TableBody>
+                    {data.map((row) => (
+                        <StyledTableRow
+                            key={row.id}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <StyledTableCell align="center" component="th" scope="row">
+                                {row.address}
+                            </StyledTableCell>
+                            <StyledTableCell align="center">{row.name}</StyledTableCell>
+                            <StyledTableCell align="center">{row.dataPaySubscription.split("T")[0]}</StyledTableCell>
+                            <StyledTableCell align="center">{row.doctorsCount}</StyledTableCell>
+                            <StyledTableCell align="center">{row.patientsCount}</StyledTableCell>
+                            <StyledTableCell align="center"><ActionsTable current_token={props.current_token} onHId={props.onHId}
+                                                                        page={props.page} role={props.roleUser} onViewHospital={props.onViewHospital}
+                                                                        onHospital={props.onHospital} hospitalId={row.id}/></StyledTableCell>
+                        </StyledTableRow>
+                    ))}
+                </TableBody>
+            </Table>}
+            {props.page === "accounts" && props.roleUser === "HospitalAdministrator" &&
+                <Table sx={{ minWidth: 650 }}  aria-label="simple table">
+                    <TableHead>
+                        <TableRow
+                            key={props.titles[0]}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            {props.titles.map((title) => (
 
-                              <StyledTableCell align="center" component="th" scope="row">
-                                  {title} <SortIcon/>
-                              </StyledTableCell>
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {title} <SortIcon/>
+                                </StyledTableCell>
 
-                          ))}
-                          <StyledTableCell component="th" scope="row">
+                            ))}
+                            <StyledTableCell component="th" scope="row">
 
-                          </StyledTableCell>
-                      </TableRow>
-                  </TableHead>
-                  <TableBody>
-                      {data.map((row) => (
-                          <StyledTableRow
-                              key={row.id}
-                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                          >
-                              <StyledTableCell component="th" scope="row">
-                                  {row.firstName} {row.lastName}
-                              </StyledTableCell>
-                              <StyledTableCell align="left">{row.phone}</StyledTableCell>
-                              <StyledTableCell align="left">{row.email}</StyledTableCell>
-                              <StyledTableCell align="left">{row.beginningWorkingDay.split("T")[1].split(".")[0]}
-                                  /{row.endWorkingDay.split("T")[1].split(".")[0]}</StyledTableCell>
+                            </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <StyledTableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {row.firstName} {row.lastName}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">{row.phone}</StyledTableCell>
+                                <StyledTableCell align="center">{row.email}</StyledTableCell>
+                                <StyledTableCell align="center">{row.beginningWorkingDay.split("T")[1].split(".")[0]}
+                                    /{row.endWorkingDay.split("T")[1].split(".")[0]}</StyledTableCell>
 
-                              <StyledTableCell align="left"><ActionsTable onDoctor={props.onDoctor} onViewDoctor={props.onViewDoctor}
-                                                                          current_token={props.current_token}
-                                                                          page={props.page} role={props.roleUser}
-                                                                          onAddDoctor={props.onAddDoctor} doctorId={row.id}/></StyledTableCell>
-                          </StyledTableRow>
-                      ))}
-                  </TableBody>
-              </Table>
-          }
-          {props.page === "patients" && props.roleUser === "HospitalAdministrator" &&
-          <Table sx={{ minWidth: 650 }}  aria-label="simple table">
-              <TableHead>
-                  <TableRow
-                      key={props.titles[0]}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                      {props.titles.map((title) => (
+                                <StyledTableCell align="center"><ActionsTable onDoctor={props.onDoctor} onViewDoctor={props.onViewDoctor}
+                                                                            current_token={props.current_token}
+                                                                            page={props.page} role={props.roleUser}
+                                                                            onAddDoctor={props.onAddDoctor} doctorId={row.id}/></StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            }
+            {props.page === "patients" && props.roleUser === "HospitalAdministrator" &&
+                <Table sx={{ minWidth: 650 }}  aria-label="simple table">
+                    <TableHead>
+                        <TableRow
+                            key={props.titles[0]}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            {props.titles.map((title) => (
 
-                          <StyledTableCell align="center" component="th" scope="row">
-                              {title} <SortIcon/>
-                          </StyledTableCell>
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {title} <SortIcon/>
+                                </StyledTableCell>
 
-                      ))}
-                      <StyledTableCell component="th" scope="row">
+                            ))}
+                            <StyledTableCell component="th" scope="row">
 
-                      </StyledTableCell>
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                  {data.map((row) => (
-                      <StyledTableRow
-                          key={row.id}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                          <StyledTableCell component="th" scope="row">
-                              {row.firstName} {row.lastName}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">{row.phone}</StyledTableCell>
-                          <StyledTableCell align="left">{row.email}</StyledTableCell>
-                          <StyledTableCell align="left">{row.birthDate.split("T")[0]}</StyledTableCell>
-                          <StyledTableCell align="left">{getDoctor(row.doctorId)}</StyledTableCell>
+                            </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {filteredData.map((row) => (
+                            <StyledTableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {row.firstName} {row.lastName}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">{row.phone}</StyledTableCell>
+                                <StyledTableCell align="center">{row.email}</StyledTableCell>
+                                <StyledTableCell align="center">{caregiver[row.id]}</StyledTableCell>
+                                <StyledTableCell align="center">{doctor[row.id]}</StyledTableCell>
 
-                          <StyledTableCell align="left"><ActionsTable onPatient={props.onPatient} onViewPatient={props.onViewPatient}
-                                                                      current_token={props.current_token}
-                                                                      page={props.page} role={props.roleUser}
-                                                                      onAddPatient={props.onAddPatient} patientId={row.id}/></StyledTableCell>
-                      </StyledTableRow>
-                  ))}
-              </TableBody>
-          </Table>
-      }
-          {((props.page === "patients" &&  (props.roleUser === "Doctor" || props.roleUser === "CaregiverPatient")) ||
-                  props.page === "caregiverPatients" && props.roleUser === "HospitalAdministrator")  &&
-              <Table sx={{ minWidth: 650 }}  aria-label="simple table">
-                  <TableHead>
-                      <TableRow
-                          key={props.titles[0]}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                          {props.titles.map((title) => (
+                                <StyledTableCell align="center"><ActionsTable onPatient={props.onPatient} onViewPatient={props.onViewPatient}
+                                                                            current_token={props.current_token}
+                                                                            page={props.page} role={props.roleUser}
+                                                                            onAddPatient={props.onAddPatient} patientId={row.id}/></StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            }
+            {((props.page === "patients" &&  (props.roleUser === "Doctor" || props.roleUser === "CaregiverPatient")) ||
+                    props.page === "caregiverPatients" && props.roleUser === "HospitalAdministrator")  &&
+                <Table sx={{ minWidth: 650 }}  aria-label="simple table">
+                    <TableHead>
+                        <TableRow
+                            key={props.titles[0]}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            {props.titles.map((title) => (
 
-                              <StyledTableCell align="center" component="th" scope="row">
-                                  {title} <SortIcon/>
-                              </StyledTableCell>
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {title} <SortIcon/>
+                                </StyledTableCell>
 
-                          ))}
-                          <StyledTableCell component="th" scope="row">
+                            ))}
+                            <StyledTableCell component="th" scope="row">
 
-                          </StyledTableCell>
-                      </TableRow>
-                  </TableHead>
-                  <TableBody>
-                      {data.map((row) => (
-                          <StyledTableRow
-                              key={row.id}
-                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                          >
-                              <StyledTableCell component="th" scope="row">
-                                  {row.firstName} {row.lastName}
-                              </StyledTableCell>
-                              <StyledTableCell align="left">{row.phone}</StyledTableCell>
-                              <StyledTableCell align="left">{row.email}</StyledTableCell>
-                              <StyledTableCell align="left">{row.birthDate.split("T")[0]}</StyledTableCell>
+                            </StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <StyledTableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <StyledTableCell align="center" component="th" scope="row">
+                                    {row.firstName} {row.lastName}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">{row.phone}</StyledTableCell>
+                                <StyledTableCell align="center">{row.email}</StyledTableCell>
+                                <StyledTableCell align="center">{row.birthDate.split("T")[0]}</StyledTableCell>
 
-                              <StyledTableCell align="left"><ActionsTable onPatient={props.onPatient} onViewPatient={props.onViewPatient}
-                                                                          onViewCaregiverPatient={props.onViewCaregiverPatient}
-                                                                          onAddCaregiverPatient={props.onAddCaregiverPatient} onCaregiverPatient={props.onCaregiverPatient}
-                                                                          current_token={props.current_token} idUser={props.idUser}
-                                                                          page={props.page} role={props.roleUser}
-                                                                          onAddPatient={props.onAddPatient} patientId={row.id}/></StyledTableCell>
-                          </StyledTableRow>
-                      ))}
-                  </TableBody>
-              </Table>
-          }
-      </TableContainer>
-  );
+                                <StyledTableCell align="center"><ActionsTable onPatient={props.onPatient} onViewPatient={props.onViewPatient}
+                                                                            onViewCaregiverPatient={props.onViewCaregiverPatient}
+                                                                            onAddCaregiverPatient={props.onAddCaregiverPatient} onCaregiverPatient={props.onCaregiverPatient}
+                                                                            current_token={props.current_token} idUser={props.idUser}
+                                                                            page={props.page} role={props.roleUser}
+                                                                            onAddPatient={props.onAddPatient} patientId={row.id}/></StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            }
+        </TableContainer>
+    );
 }

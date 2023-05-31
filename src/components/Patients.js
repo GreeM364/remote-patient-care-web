@@ -9,35 +9,34 @@ import AddPatient from "./AddPatient";
 import CardPatient from "./CardPatient";
 import { useTranslation } from 'react-i18next';
 
-function Patients(props) {
+function Patients({ current_token, idUser, roleUser, searchQuery}) {
     const { t } = useTranslation();
-    const titlesGlobalAdmin = [t('fullName'), t('phone'), t('email'), t('birthDay'), t("doctor")];
+    const titlesAdmin = [t('fullName'), t('phone'), t('email'), t('caregiver'), t("doctor")];
     const titlesPatient = [t('fullName'), t('phone'), t('email'), t('birthDay')];
     const [addPatient, setAddPatient] = useState(false);
     const [patient, setPatient] = useState("")
     const [viewPatient, setViewPatient] = useState(false)
-
+    console.log("Input patient: ", searchQuery)
 
     return (
         <div className="Accounts">
             {!addPatient && !viewPatient && <h1>{t("patients")}</h1>}
-            {props.roleUser === "HospitalAdministrator" && !addPatient && !viewPatient &&
-                <Button onClick={setAddPatient} className="add" variant="contained"><AddCircleOutlineIcon/>{t("addNewPatient")}</Button>}
-            {props.roleUser === "HospitalAdministrator" && !addPatient && !viewPatient &&
+            {roleUser === "HospitalAdministrator" && !addPatient && !viewPatient &&
+                <Button onClick={setAddPatient} className="add" variant="contained" ><AddCircleOutlineIcon/>{t("createNewPatient")}</Button>}
+            {roleUser === "HospitalAdministrator" && !addPatient && !viewPatient &&
                 <BasicTable page="patients" onPatient={setPatient} onViewPatient={setViewPatient}
-                            onAddPatient={setAddPatient} current_token={props.current_token} titles={titlesGlobalAdmin}
-                            roleUser={props.roleUser}/>}
+                            onAddPatient={setAddPatient} current_token={current_token} titles={titlesAdmin}
+                            roleUser={roleUser} searchQuery={searchQuery}/>}
 
-            {(props.roleUser === "Doctor" || props.roleUser === "CaregiverPatient") && !addPatient && !viewPatient &&
+            {(roleUser === "Doctor" || roleUser === "CaregiverPatient") && !addPatient && !viewPatient &&
                 <BasicTable page="patients" onPatient={setPatient} onViewPatient={setViewPatient}
-                            onAddPatient={setAddPatient} current_token={props.current_token} titles={titlesPatient}
-                            roleUser={props.roleUser} idUser={props.idUser}/>}
+                            onAddPatient={setAddPatient} current_token={current_token} titles={titlesPatient}
+                            roleUser={roleUser} idUser={idUser} searchQuery={searchQuery}/>}
             {addPatient && <h1>{t("createPatient")}</h1>}
             {addPatient && <AddPatient patient={patient} onAddPatient={setAddPatient}
-                                 current_token={props.current_token}/>}
-            {viewPatient && <CardPatient patient={patient} roleUser={props.roleUser} onViewPatient={setViewPatient}
-                                     current_token={props.current_token}/>}
-
+                                 current_token={current_token}/>}
+            {viewPatient && <CardPatient patient={patient} roleUser={roleUser} onViewPatient={setViewPatient}
+                                     current_token={current_token}/>}
 
         </div>
     );
